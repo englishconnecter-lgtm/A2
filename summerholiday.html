@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Choosing a Summer Holiday — A2 Lesson</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f3f7f5;--card:#fff;--soft:#edf7f2;--text:#19302a;--muted:#65736f;--line:#d9e4df;--blue:#185fa5;--green:#1d9e75;--amber:#a86508;--red:#c84242;--radius:18px;--shadow:0 16px 38px rgba(25,48,42,.10)}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#f7fbff,var(--bg));color:var(--text);min-height:100vh;padding:28px 16px}
+.outer{max-width:930px;margin:0 auto}
+.page-header{background:linear-gradient(135deg,#185fa5,#1d9e75);color:#fff;border-radius:28px;padding:30px;margin-bottom:18px;box-shadow:var(--shadow)}
+.page-header h1{font-size:clamp(2rem,4vw,3rem);line-height:1.08;margin-bottom:8px}
+.page-header p{color:rgba(255,255,255,.85);font-size:15px}
+.lesson-wrap{background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:28px;padding:24px;box-shadow:var(--shadow)}
+.progress-bar{display:flex;gap:8px;align-items:center;margin-bottom:24px;padding:12px;background:#f7faf9;border:1px solid var(--line);border-radius:18px}
+.step-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#fff;border:1px solid var(--line);font-weight:700;color:var(--muted);cursor:pointer;flex-shrink:0}
+.step-dot.active{background:linear-gradient(135deg,var(--blue),var(--green));color:#fff}
+.step-dot.done{background:#eaf3de;color:#2d621f}
+.step-line{height:2px;background:var(--line);flex:1}
+.section{display:none}.section.active{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.section-header{text-transform:uppercase;letter-spacing:.08em;color:var(--blue);font-size:11px;font-weight:800;margin-bottom:8px}
+.section-title{font-size:clamp(1.55rem,3vw,2.1rem);margin-bottom:6px}
+.section-sub{color:var(--muted);font-size:14px;margin-bottom:18px}
+.hero{min-height:330px;border-radius:24px;background:linear-gradient(120deg,rgba(7,35,57,.75),rgba(29,158,117,.25)),url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;color:white;padding:26px;display:flex;flex-direction:column;justify-content:flex-end;margin-bottom:16px}
+.hero h2{font-size:32px;max-width:620px;line-height:1.1;margin-bottom:10px}
+.hero p{font-size:15px;max-width:620px;line-height:1.65;color:rgba(255,255,255,.9)}
+.card,.card-muted,.tip-box{border-radius:var(--radius);padding:17px 19px;margin-bottom:14px;border:1px solid var(--line)}
+.card{background:var(--card)}.card-muted{background:#f7faf9}.tip-box{background:#fff4df;color:#714507;border-color:#f3d198;font-size:13px;line-height:1.6}
+.dest-grid,.two-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}.two-grid{grid-template-columns:1fr 1fr}
+.dest-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px}.dest-name{font-weight:800;margin-bottom:8px}
+.dest-row{display:flex;justify-content:space-between;border-bottom:1px solid #edf1ef;padding:5px 0;font-size:13px}.dest-row:last-child{border-bottom:0}.dest-val{font-weight:700}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin-bottom:14px}
+.vocab-chip{background:#eaf3ff;color:#174d85;border:1px solid #cfe2f8;border-radius:14px;padding:10px 12px;text-align:center;font-weight:700;font-size:13px;cursor:pointer}
+.vocab-chip.selected{box-shadow:0 0 0 3px rgba(24,95,165,.18)}.vocab-chip.used{opacity:.45;background:#f2f4f4;color:var(--muted)}
+.gap-sentence{font-size:15px;line-height:2.35;margin-bottom:8px}.gap{display:inline-block;min-width:110px;min-height:28px;border-bottom:2px solid var(--blue);text-align:center;color:var(--blue);font-weight:800;cursor:pointer;background:#f4f9ff;border-radius:8px 8px 0 0}
+.gap.correct{background:#eaf3de;color:#2d621f;border-color:#639922}.gap.wrong{background:#fdeeee;color:#992e2e;border-color:#c84242}
+.feedback-msg{display:none;padding:12px 14px;border-radius:14px;margin-bottom:12px;font-size:13px}.feedback-msg.show{display:block}.feedback-msg.ok{background:#eaf3de;color:#2d621f}.feedback-msg.err{background:#fdeeee;color:#992e2e}
+.opt-btn,.btn{border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px 15px;cursor:pointer;font-size:14px;color:var(--text)}
+.opt-btn{display:block;width:100%;text-align:left;line-height:1.5}.opt-btn.correct{background:#eaf3de;color:#2d621f;border-color:#b7d88c}.opt-btn.wrong{background:#fdeeee;color:#992e2e;border-color:#f1b4b4}
+.drill-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn.primary{background:linear-gradient(135deg,var(--blue),var(--green));color:#fff;border:0}
+.nav-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px}.nav-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.time-badge{font-size:11px;color:var(--muted);background:#f7faf9;border:1px solid var(--line);border-radius:999px;padding:7px 11px}
+.bullet-row{display:flex;gap:8px;margin-bottom:8px;line-height:1.55;font-size:14px}.bullet-dot{width:7px;height:7px;background:var(--green);border-radius:50%;margin-top:7px;flex-shrink:0}
+.role-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.role-card{border-radius:18px;padding:15px;border:1px solid var(--line)}.role-a{background:#eaf3ff}.role-b{background:#e7f8f2}.role-title{font-weight:800;text-transform:uppercase;font-size:12px;margin-bottom:8px}
+.speech-a,.speech-b{border-left:4px solid var(--blue);background:#eaf3ff;border-radius:0 16px 16px 0;padding:12px 15px;margin-bottom:10px;font-size:14px;line-height:1.65}.speech-b{border-left-color:var(--green);background:#e7f8f2}.label{font-size:11px;font-weight:800;text-transform:uppercase;margin-bottom:5px;color:var(--muted)}
+.explain-box{display:none;margin-top:10px;padding:11px 13px;border-radius:14px;font-size:13px}
+.score-circle{width:88px;height:88px;border:3px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 14px}.score-num{font-size:22px;font-weight:800;color:var(--green)}
+@media(max-width:720px){.dest-grid,.two-grid,.role-card-grid,.drill-options{grid-template-columns:1fr}.lesson-wrap{padding:18px}.hero{min-height:260px}.hero h2{font-size:26px}.progress-bar{gap:5px}.step-dot{width:28px;height:28px}}
+</style>
+</head>
+<body>
+<div class="outer">
+<header class="page-header">
+<h1>Choosing a Summer Holiday</h1>
+<p>A2 level · 60-minute interactive lesson</p>
+</header>
+<main class="lesson-wrap">
+<div class="progress-bar" id="progressBar">
+<div class="step-dot active" onclick="goTo(0)">1</div><div class="step-line"></div>
+<div class="step-dot" onclick="goTo(1)">2</div><div class="step-line"></div>
+<div class="step-dot" onclick="goTo(2)">3</div><div class="step-line"></div>
+<div class="step-dot" onclick="goTo(3)">4</div><div class="step-line"></div>
+<div class="step-dot" onclick="goTo(4)">5</div><div class="step-line"></div>
+<div class="step-dot" onclick="goTo(5)">6</div><div class="step-line"></div>
+<div class="step-dot" onclick="goTo(6)">7</div><div class="step-line"></div>
+<div class="step-dot" onclick="goTo(7)">8</div>
+</div>
+
+<section class="section active" id="sec0">
+<div class="section-header">Page 1 — Warm-up</div>
+<h2 class="section-title">Where should we go?</h2>
+<p class="section-sub">7 minutes · Speaking and context</p>
+<div class="hero"><h2>Compare three easy holiday ideas</h2><p>Students practise simple holiday vocabulary, comparative adjectives, and polite decision-making language.</p></div>
+<div class="card-muted">
+<p style="font-weight:700;margin-bottom:8px">Talk with your partner:</p>
+<p>1. Do you like beach holidays, city holidays, or nature holidays?</p>
+<p>2. What is important for you: price, weather, food, culture, or travel time?</p>
+<p>3. Where did you go on your last holiday?</p>
+</div>
+<div class="nav-row"><span class="time-badge">7 min</span><button class="btn primary" onclick="goTo(1)">Next: destinations →</button></div>
+</section>
+
+<section class="section" id="sec1">
+<div class="section-header">Page 2 — Reading</div>
+<h2 class="section-title">Three holiday choices</h2>
+<p class="section-sub">8 minutes · Read and compare</p>
+<div class="dest-grid">
+<div class="dest-card"><div class="dest-name">Lisbon</div><div class="dest-row"><span>Flight</span><span class="dest-val">2.5 hrs</span></div><div class="dest-row"><span>Cost/day</span><span class="dest-val">€90</span></div><div class="dest-row"><span>Weather</span><span class="dest-val">28°C</span></div><div class="dest-row"><span>Good for</span><span class="dest-val">City + beach</span></div></div>
+<div class="dest-card"><div class="dest-name">Kyoto</div><div class="dest-row"><span>Flight</span><span class="dest-val">12 hrs</span></div><div class="dest-row"><span>Cost/day</span><span class="dest-val">€140</span></div><div class="dest-row"><span>Weather</span><span class="dest-val">33°C</span></div><div class="dest-row"><span>Good for</span><span class="dest-val">Culture</span></div></div>
+<div class="dest-card"><div class="dest-name">Costa Rica</div><div class="dest-row"><span>Flight</span><span class="dest-val">11 hrs</span></div><div class="dest-row"><span>Cost/day</span><span class="dest-val">€110</span></div><div class="dest-row"><span>Weather</span><span class="dest-val">26°C</span></div><div class="dest-row"><span>Good for</span><span class="dest-val">Nature</span></div></div>
+</div>
+<div class="tip-box">A2 focus: use short sentences. “Lisbon is cheaper than Kyoto.” “Kyoto is hotter than Lisbon.” “Costa Rica is good for nature.”</div>
+<div class="nav-row"><button class="btn" onclick="goTo(0)">← back</button><div class="nav-right"><span class="time-badge">8 min</span><button class="btn primary" onclick="goTo(2)">Next: vocabulary →</button></div></div>
+</section>
+
+<section class="section" id="sec2">
+<div class="section-header">Page 3 — Vocabulary</div>
+<h2 class="section-title">Holiday vocabulary</h2>
+<p class="section-sub">10 minutes · Click and fill the gaps</p>
+<div class="tip-box">Click a word, then click a blank. Click a filled blank to remove the word.</div>
+<div class="vocab-grid" id="wordBank"></div>
+<div id="gapFeedback" class="feedback-msg"></div>
+<div class="card"><div id="gapSentences"></div></div>
+<div class="nav-row"><button class="btn" onclick="goTo(1)">← back</button><div class="nav-right"><span class="time-badge">10 min</span><button class="btn" onclick="checkGaps()">Check answers</button><button class="btn primary" onclick="goTo(3)">Next: grammar →</button></div></div>
+</section>
+
+<section class="section" id="sec3">
+<div class="section-header">Page 4 — Grammar</div>
+<h2 class="section-title">Comparatives: cheaper, hotter, more expensive</h2>
+<p class="section-sub">10 minutes · Rules and practice</p>
+<div class="two-grid">
+<div class="card"><h3 style="margin-bottom:8px">Short adjectives</h3><div class="bullet-row"><span class="bullet-dot"></span><span>cheap → cheaper</span></div><div class="bullet-row"><span class="bullet-dot"></span><span>hot → hotter</span></div><div class="bullet-row"><span class="bullet-dot"></span><span>long → longer</span></div><p style="margin-top:8px;font-size:14px;color:var(--muted)">Use: Lisbon is cheaper than Kyoto.</p></div>
+<div class="card"><h3 style="margin-bottom:8px">Long adjectives</h3><div class="bullet-row"><span class="bullet-dot"></span><span>expensive → more expensive</span></div><div class="bullet-row"><span class="bullet-dot"></span><span>interesting → more interesting</span></div><p style="margin-top:8px;font-size:14px;color:var(--muted)">Use: Kyoto is more expensive than Lisbon.</p></div>
+</div>
+<div class="card-muted"><p style="font-weight:700;margin-bottom:8px">Make 4 sentences:</p><p>1. Lisbon / cheap / Kyoto</p><p>2. Kyoto / hot / Costa Rica</p><p>3. Costa Rica / far / Lisbon</p><p>4. Kyoto / expensive / Lisbon</p></div>
+<div class="nav-row"><button class="btn" onclick="goTo(2)">← back</button><div class="nav-right"><span class="time-badge">10 min</span><button class="btn primary" onclick="goTo(4)">Next: grammar quiz →</button></div></div>
+</section>
+
+<section class="section" id="sec4">
+<div class="section-header">Page 5 — Grammar quiz</div>
+<h2 class="section-title">Choose the correct sentence</h2>
+<p class="section-sub">10 minutes · Multiple choice</p>
+<div id="drillWrap"></div>
+<div class="nav-row"><button class="btn" onclick="goTo(3)">← back</button><div class="nav-right"><span class="time-badge">10 min</span><button class="btn primary" id="drillNextBtn" onclick="goTo(5)" style="display:none">Next: useful phrases →</button></div></div>
+</section>
+
+<section class="section" id="sec5">
+<div class="section-header">Page 6 — Useful language</div>
+<h2 class="section-title">Giving opinions and choosing</h2>
+<p class="section-sub">7 minutes · Phrases</p>
+<div id="funcContent"></div>
+<div class="nav-row"><button class="btn" onclick="goTo(4)">← back</button><div class="nav-right"><span class="time-badge">7 min</span><button class="btn primary" onclick="goTo(6)">Next: role play →</button></div></div>
+</section>
+
+<section class="section" id="sec6">
+<div class="section-header">Page 7 — Speaking</div>
+<h2 class="section-title">Choose the holiday together</h2>
+<p class="section-sub">10 minutes · Role play</p>
+<div id="roleplayContent"></div>
+<div class="nav-row"><button class="btn" onclick="goTo(5)">← back</button><div class="nav-right"><span class="time-badge">10 min</span><button class="btn primary" onclick="goTo(7)">Finish lesson →</button></div></div>
+</section>
+
+<section class="section" id="sec7">
+<div class="section-header">Page 8 — Summary</div>
+<h2 class="section-title">Lesson complete!</h2>
+<p class="section-sub">8 minutes · Review and homework</p>
+<div id="summaryContent"></div>
+<div class="nav-row"><button class="btn" onclick="goTo(6)">← back</button><button class="btn primary" onclick="restartLesson()">Start again ↺</button></div>
+</section>
+</main>
+</div>
+<script>
+let currentSection=0,selectedWord=null,gapAnswers={},drillScore=0,drillIndex=0,drillDone=false;
+const WORDS=[
+{word:'beach',def:'a place by the sea with sand'},
+{word:'flight',def:'a journey by plane'},
+{word:'hotel',def:'a place where you sleep on holiday'},
+{word:'weather',def:'sun, rain, heat, cold'},
+{word:'culture',def:'food, history, music, art and traditions'},
+{word:'nature',def:'trees, mountains, animals and rivers'},
+{word:'cheap',def:'not expensive'},
+{word:'expensive',def:'costing a lot of money'},
+{word:'crowded',def:'with many people'},
+{word:'quiet',def:'not noisy; not busy'}
+];
+const GAPS=[
+{id:'g0',before:'Lisbon is good for a city holiday and a ',blank:'beach',after:' holiday.'},
+{id:'g1',before:'The ',blank:'flight',after:' to Kyoto is very long.'},
+{id:'g2',before:'We need a nice ',blank:'hotel',after:' near the centre.'},
+{id:'g3',before:'The ',blank:'weather',after:' in Costa Rica is warm in July.'},
+{id:'g4',before:'Kyoto is a good place for ',blank:'culture',after:' and old temples.'},
+{id:'g5',before:'Costa Rica is great for ',blank:'nature',after:' and animals.'},
+{id:'g6',before:'Lisbon is more ',blank:'cheap',after:' than Kyoto.'},
+{id:'g7',before:'Kyoto is more ',blank:'expensive',after:' than Lisbon.'},
+{id:'g8',before:'The beach can be very ',blank:'crowded',after:' in summer.'},
+{id:'g9',before:'I prefer a ',blank:'quiet',after:' place with not many people.'}
+];
+const FUNC_CATS=[
+{label:'Say what you prefer',phrases:['I prefer Lisbon because it is cheaper.','I would like to go to Costa Rica.','For me, the best choice is Lisbon.','I don’t want a very long flight.']},
+{label:'Compare places',phrases:['Lisbon is cheaper than Kyoto.','Kyoto is hotter than Costa Rica.','Costa Rica is farther than Lisbon.','Lisbon is easier for a short holiday.']},
+{label:'Agree or disagree politely',phrases:['I agree with you.','That is a good idea.','I’m not sure.','I think Costa Rica is better for nature.']},
+{label:'Make a final decision',phrases:['So, let’s choose Lisbon.','I think we can agree on Costa Rica.','That sounds good to me.','Great, let’s book the flights.']}
+];
+const DRILL_QS=[
+{q:'Which sentence is correct?',opts:['Lisbon is cheaper than Kyoto.','Lisbon is more cheap than Kyoto.','Lisbon is cheap than Kyoto.','Lisbon is the cheaper Kyoto.'],ans:0,explain:'Use cheaper than for short adjectives.'},
+{q:'Which sentence is correct?',opts:['Kyoto is expensiver than Lisbon.','Kyoto is more expensive than Lisbon.','Kyoto is most expensive than Lisbon.','Kyoto more expensive Lisbon.'],ans:1,explain:'Use more expensive than for long adjectives.'},
+{q:'Which sentence is correct?',opts:['Kyoto is hotter than Lisbon.','Kyoto is more hot than Lisbon.','Kyoto is hoter than Lisbon.','Kyoto hotter Lisbon.'],ans:0,explain:'Hot doubles the final consonant: hot → hotter.'},
+{q:'Which sentence is correct?',opts:['Costa Rica is more far than Lisbon.','Costa Rica is farther than Lisbon.','Costa Rica is farer Lisbon.','Costa Rica is most far Lisbon.'],ans:1,explain:'Far → farther/further.'},
+{q:'Choose the best opinion sentence.',opts:['I prefer Lisbon because it is cheaper.','I prefer Lisbon because is cheaper.','I prefer to Lisbon because cheaper.','I prefer Lisbon it cheaper.'],ans:0,explain:'Use because + subject + verb: because it is cheaper.'},
+{q:'Choose the polite disagreement.',opts:['No, you are wrong.','I’m not sure. I think Lisbon is better.','Bad idea.','Never.'],ans:1,explain:'I’m not sure softens disagreement.'}
+];
+const ROLEPLAY=[
+{speaker:'A',text:'[Say you want to choose a holiday. Ask: Which place do you prefer?]'},
+{speaker:'B',text:'I prefer Costa Rica because I love nature and animals. What about you?'},
+{speaker:'A',text:'[Say you prefer Lisbon. Give two reasons: it is cheaper and the flight is shorter.]'},
+{speaker:'B',text:'That is true, but Costa Rica is more exciting than Lisbon.'},
+{speaker:'A',text:'[Agree, but say Costa Rica is farther and more expensive.]'},
+{speaker:'B',text:'Yes, it is more expensive. Maybe Lisbon is better for this year.'},
+{speaker:'A',text:'[Ask about Kyoto. Is it a good choice?]'},
+{speaker:'B',text:'Kyoto is interesting, but it is very far and very hot in July.'},
+{speaker:'A',text:'[Make a final decision. Choose Lisbon and say why.]'},
+{speaker:'B',text:'OK, Lisbon sounds good. Let’s book the flights!'}
+];
+function goTo(n){document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===n));document.querySelectorAll('.step-dot').forEach((d,i)=>{d.classList.remove('active','done');if(i===n)d.classList.add('active');else if(i<n)d.classList.add('done')});currentSection=n;if(n===2)buildGaps();if(n===4&&!drillDone)buildDrill();if(n===5)buildFunctional();if(n===6)buildRoleplay();if(n===7)buildSummary();window.scrollTo({top:0,behavior:'smooth'})}
+function key(w){return w.replace(/\s/g,'_')}
+function buildGaps(){const bank=document.getElementById('wordBank');bank.innerHTML='';WORDS.forEach(w=>{const c=document.createElement('div');c.className='vocab-chip';c.textContent=w.word;c.id='chip_'+key(w.word);c.title=w.def;c.onclick=()=>selectWord(w.word);bank.appendChild(c)});const ct=document.getElementById('gapSentences');ct.innerHTML='';GAPS.forEach(g=>{const p=document.createElement('p');p.className='gap-sentence';p.innerHTML=g.before+` <span class="gap" id="${g.id}" onclick="fillGap('${g.id}')"></span> `+g.after;ct.appendChild(p)})}
+function selectWord(w){document.querySelectorAll('.vocab-chip').forEach(c=>c.classList.remove('selected'));if(selectedWord===w){selectedWord=null;return}selectedWord=w;document.getElementById('chip_'+key(w))?.classList.add('selected')}
+function fillGap(id){const gap=document.getElementById(id);const cur=gap.textContent.trim();if(cur){document.getElementById('chip_'+key(cur))?.classList.remove('used');gap.textContent='';gap.classList.remove('correct','wrong');delete gapAnswers[id];return}if(!selectedWord)return;const chip=document.getElementById('chip_'+key(selectedWord));if(chip&&chip.classList.contains('used'))return;gap.textContent=selectedWord;gapAnswers[id]=selectedWord;chip?.classList.add('used');selectedWord=null;document.querySelectorAll('.vocab-chip').forEach(c=>c.classList.remove('selected'))}
+function checkGaps(){let correct=0;GAPS.forEach(g=>{const gap=document.getElementById(g.id);const val=gap.textContent.trim();if(val===g.blank){correct++;gap.classList.add('correct');gap.classList.remove('wrong')}else if(val){gap.classList.add('wrong');gap.classList.remove('correct')}});const fb=document.getElementById('gapFeedback');fb.className='feedback-msg show '+(correct===GAPS.length?'ok':'err');fb.textContent=correct===GAPS.length?`All ${GAPS.length} correct!`:`${correct} of ${GAPS.length} correct. Try again.`}
+function buildDrill(){drillIndex=0;drillScore=0;renderDrillQ()}
+function renderDrillQ(){const wrap=document.getElementById('drillWrap');if(drillIndex>=DRILL_QS.length){drillDone=true;document.getElementById('drillNextBtn').style.display='inline-block';wrap.innerHTML=`<div class="card" style="text-align:center"><div class="score-circle"><span class="score-num">${drillScore}/${DRILL_QS.length}</span><span>score</span></div><p>${drillScore>=4?'Great work!':'Review the grammar and try again.'}</p></div>`;return}const q=DRILL_QS[drillIndex];wrap.innerHTML=`<p class="section-sub">Question ${drillIndex+1} of ${DRILL_QS.length}</p><div class="card"><p class="drill-q">${q.q}</p><div class="drill-options">${q.opts.map((o,i)=>`<button class="opt-btn" onclick="answerDrill(${i})">${o}</button>`).join('')}</div><div id="drillExplain" class="explain-box"></div><button id="drillContinue" class="btn primary" style="display:none;margin-top:12px" onclick="nextDrillQ()">Next question →</button></div>`}
+function answerDrill(chosen){const q=DRILL_QS[drillIndex];document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true);document.querySelectorAll('.opt-btn')[q.ans].classList.add('correct');const exp=document.getElementById('drillExplain');exp.style.display='block';if(chosen===q.ans){drillScore++;exp.style.background='#eaf3de';exp.textContent='Correct! '+q.explain}else{document.querySelectorAll('.opt-btn')[chosen].classList.add('wrong');exp.style.background='#fdeeee';exp.textContent='Not quite. '+q.explain}document.getElementById('drillContinue').style.display='inline-block'}
+function nextDrillQ(){drillIndex++;renderDrillQ()}
+function buildFunctional(){const wrap=document.getElementById('funcContent');wrap.innerHTML='';FUNC_CATS.forEach(cat=>{let html=`<div class="card"><p style="font-size:12px;font-weight:800;text-transform:uppercase;color:var(--muted);margin-bottom:9px">${cat.label}</p>`;cat.phrases.forEach(ph=>html+=`<div class="bullet-row"><span class="bullet-dot"></span><span>${ph}</span></div>`);html+='</div>';wrap.innerHTML+=html})}
+function buildRoleplay(){const wrap=document.getElementById('roleplayContent');wrap.innerHTML=`<div class="role-card-grid"><div class="role-card role-a"><div class="role-title">Student A</div><p>You prefer Lisbon. It is cheaper and the flight is shorter.</p></div><div class="role-card role-b"><div class="role-title">Student B</div><p>You prefer Costa Rica. It is better for nature and adventure.</p></div></div><div class="tip-box">Use at least 5 comparison sentences: cheaper than, hotter than, more expensive than, farther than, better than.</div>`;ROLEPLAY.forEach(line=>{wrap.innerHTML+=`<div class="${line.speaker==='A'?'speech-a':'speech-b'}"><div class="label">Student ${line.speaker}</div>${line.text}</div>`})}
+function buildSummary(){document.getElementById('summaryContent').innerHTML=`<div class="card"><h3 style="margin-bottom:10px">Today you practised:</h3><div class="bullet-row"><span class="bullet-dot"></span><span>10 holiday vocabulary words</span></div><div class="bullet-row"><span class="bullet-dot"></span><span>Comparatives: cheaper, hotter, farther, more expensive</span></div><div class="bullet-row"><span class="bullet-dot"></span><span>Opinion phrases: I prefer..., I think..., I agree...</span></div><div class="bullet-row"><span class="bullet-dot"></span><span>A holiday decision role play</span></div></div><div class="card-muted"><h3 style="margin-bottom:10px">Homework</h3><p>Write 8 sentences comparing two holiday places. Use: cheaper than, hotter than, more expensive than, farther than, better than.</p></div><div class="tip-box">Good work! You can now compare simple holiday choices and explain your opinion at A2 level.</div>`}
+function restartLesson(){drillDone=false;drillScore=0;drillIndex=0;gapAnswers={};selectedWord=null;goTo(0)}
+buildGaps();buildFunctional();buildRoleplay();buildSummary();
+</script>
+</body>
+</html>

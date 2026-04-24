@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arranging Meetings — A2 60-Minute Lesson</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#eef5fb;--surface:#fff;--surface2:#f7fbff;--text:#172033;--muted:#66758a;
+  --border:rgba(23,32,51,.12);--blue:#1f6fd1;--blue2:#184f92;--green:#3f8a36;
+  --greenSoft:#eef8ea;--red:#c84242;--redSoft:#fdeeee;--amber:#a86508;--amberSoft:#fff3de;
+  --shadow:0 18px 50px rgba(28,53,88,.12);--shadow2:0 10px 28px rgba(28,53,88,.08);
+  --radius:22px;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#101827;--surface:#172238;--surface2:#1e2b44;--text:#eef4ff;--muted:#b4c0cf;--border:rgba(255,255,255,.12);--blue:#74b5ff;--blue2:#98c9ff}
+}
+body{
+  font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:radial-gradient(circle at top left,rgba(31,111,209,.18),transparent 28%),linear-gradient(180deg,#f8fbff,var(--bg));
+  color:var(--text);min-height:100vh;padding:32px 18px 56px;
+}
+.outer{max-width:940px;margin:0 auto}
+.page-header{
+  position:relative;overflow:hidden;background:linear-gradient(135deg,#17345a,#1f6fd1);color:#fff;
+  padding:34px 30px;border-radius:30px;margin-bottom:22px;box-shadow:var(--shadow);
+}
+.page-header h1{font-size:clamp(2rem,4vw,3rem);line-height:1.08;margin-bottom:10px;letter-spacing:-.03em}
+.page-header p{font-size:15px;color:rgba(255,255,255,.86)}
+.lesson-wrap{background:rgba(255,255,255,.9);backdrop-filter:blur(14px);border:1px solid var(--border);border-radius:30px;padding:28px;box-shadow:var(--shadow)}
+@media(prefers-color-scheme:dark){.lesson-wrap{background:rgba(23,34,56,.9)}}
+.progress-bar{display:flex;align-items:center;gap:8px;margin-bottom:30px;padding:14px;background:var(--surface2);border:1px solid var(--border);border-radius:22px}
+.step-dot{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;cursor:pointer;flex-shrink:0}
+.step-dot.active{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border-color:transparent;box-shadow:0 10px 20px rgba(31,111,209,.25)}
+.step-dot.done{background:linear-gradient(135deg,#78b95c,var(--green));color:#fff;border-color:transparent}
+.step-line{height:2px;background:linear-gradient(90deg,var(--border),transparent);flex:1}
+.section{display:none}.section.active{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.section-header{font-size:11px;font-weight:800;color:var(--blue);letter-spacing:.09em;text-transform:uppercase;margin-bottom:8px}
+.section-title{font-size:clamp(1.65rem,3vw,2.15rem);font-weight:800;letter-spacing:-.03em;margin-bottom:8px}
+.section-sub{font-size:14px;color:var(--muted);margin-bottom:20px}
+.card,.card-muted,.tip-box,.roleplay-box,.int-box{border-radius:20px;padding:18px 20px;margin-bottom:14px;border:1px solid var(--border);box-shadow:var(--shadow2)}
+.card{background:var(--surface)}.card-muted{background:var(--surface2)}
+.tip-box{background:var(--amberSoft);color:#70440b;border-color:rgba(168,101,8,.2);font-size:13px;line-height:1.65}
+.hero-image{
+  min-height:360px;border-radius:24px;margin-bottom:16px;overflow:hidden;position:relative;
+  background:linear-gradient(115deg,rgba(9,23,43,.78),rgba(24,95,165,.25)),url('https://images.pexels.com/photos/3771089/pexels-photo-3771089.jpeg?auto=compress&cs=tinysrgb&w=1400') center/cover no-repeat;
+  box-shadow:var(--shadow);display:flex;align-items:flex-end;padding:28px;color:#fff;
+}
+.hero-image h2{font-size:34px;line-height:1.08;max-width:520px;margin-bottom:10px}
+.hero-image p{font-size:15px;line-height:1.7;max-width:560px;color:rgba(255,255,255,.88)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.grid2{grid-template-columns:1fr}.hero-image{min-height:300px}.progress-bar{overflow-x:auto}.step-line{min-width:22px}}
+.diary-card{background:var(--surface2);border:1px solid var(--border);border-radius:18px;padding:14px}
+.diary-name{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:800;margin-bottom:8px}
+.diary-slot{display:flex;justify-content:space-between;border-bottom:1px solid var(--border);padding:7px 0;font-size:13px}
+.diary-slot:last-child{border-bottom:0}.free{color:var(--green);font-weight:800}.busy{color:var(--red);font-weight:800}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.vocab-chip{background:#eaf3ff;border:1px solid rgba(31,111,209,.18);border-radius:999px;padding:11px 12px;text-align:center;color:#184f92;font-size:13px;font-weight:800;cursor:pointer;user-select:none}
+.vocab-chip.selected{box-shadow:0 0 0 3px rgba(31,111,209,.2)}.vocab-chip.used{opacity:.45;background:var(--surface2);color:var(--muted)}
+.gap-sentence{font-size:15px;line-height:2.35;margin-bottom:8px}
+.gap{display:inline-block;min-width:110px;min-height:28px;border-bottom:2px solid var(--blue);color:var(--blue2);font-weight:800;text-align:center;cursor:pointer;background:rgba(31,111,209,.05);border-radius:8px 8px 0 0;padding:0 6px}
+.correct{background:var(--greenSoft)!important;border-color:var(--green)!important;color:#285f22!important}.wrong{background:var(--redSoft)!important;border-color:var(--red)!important;color:#9a2c2c!important}
+.feedback-msg{display:none;font-size:13px;border-radius:14px;padding:12px 14px;margin-bottom:12px}.feedback-msg.show{display:block}.ok{background:var(--greenSoft);color:#285f22;border:1px solid rgba(63,138,54,.25)}.err{background:var(--redSoft);color:#9a2c2c;border:1px solid rgba(200,66,66,.25)}
+.opt-btn,.btn{border-radius:14px;border:1px solid var(--border);background:var(--surface);color:var(--text);padding:11px 16px;font:inherit;cursor:pointer;transition:.15s;text-align:left}
+.btn{text-align:center;font-weight:700}.btn:hover,.opt-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:var(--shadow2)}
+.btn.primary{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;border-color:transparent}.btn:disabled,.opt-btn:disabled{cursor:default}
+.drill-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}@media(max-width:560px){.drill-options{grid-template-columns:1fr}}
+.nav-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:22px}.nav-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.time-badge{font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:999px;padding:7px 12px}
+.bullet-row{display:flex;gap:9px;margin-bottom:9px;align-items:flex-start}.bullet-dot{width:7px;height:7px;border-radius:50%;background:var(--blue);margin-top:7px;flex-shrink:0}
+.roleplay-box{background:#eaf3ff;color:#144f92;border-left:4px solid var(--blue)}.int-box{background:var(--greenSoft);color:#285f22;border-left:4px solid var(--green)}
+.label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+.score-circle{width:92px;height:92px;border-radius:50%;border:4px solid var(--blue);display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 16px}.score-num{font-size:24px;font-weight:800;color:var(--blue)}.score-lbl{font-size:10px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="outer">
+<header class="page-header">
+  <h1>Arranging Meetings</h1>
+  <p>A2 level · 60-minute interactive lesson · Vocabulary, grammar, speaking and writing</p>
+</header>
+
+<div class="lesson-wrap">
+  <div class="progress-bar" id="progressBar">
+    <div class="step-dot active" onclick="goTo(0)">1</div><div class="step-line"></div>
+    <div class="step-dot" onclick="goTo(1)">2</div><div class="step-line"></div>
+    <div class="step-dot" onclick="goTo(2)">3</div><div class="step-line"></div>
+    <div class="step-dot" onclick="goTo(3)">4</div><div class="step-line"></div>
+    <div class="step-dot" onclick="goTo(4)">5</div><div class="step-line"></div>
+    <div class="step-dot" onclick="goTo(5)">6</div><div class="step-line"></div>
+    <div class="step-dot" onclick="goTo(6)">7</div><div class="step-line"></div>
+    <div class="step-dot" onclick="goTo(7)">8</div>
+  </div>
+
+  <section class="section active" id="sec0">
+    <div class="section-header">Stage 1 — Picture warm-up</div>
+    <div class="section-title">What is happening?</div>
+    <div class="section-sub">7 minutes · Speaking and prediction</div>
+    <div class="hero-image">
+      <div>
+        <h2>Arranging a meeting by phone</h2>
+        <p>Look at the picture. Who is the person calling? What meeting does he need to arrange?</p>
+      </div>
+    </div>
+    <div class="card-muted">
+      <p style="font-weight:700;margin-bottom:10px">Discuss:</p>
+      <p>1. Do you often arrange meetings at work or school?</p>
+      <p>2. Is it easier to arrange a meeting by phone, message, or email?</p>
+      <p>3. What words do you need? Think of days, times, places, and polite questions.</p>
+    </div>
+    <div class="nav-row"><span class="time-badge">7 min</span><button class="btn primary" onclick="goTo(1)">Next: vocabulary →</button></div>
+  </section>
+
+  <section class="section" id="sec1">
+    <div class="section-header">Stage 2 — Vocabulary 1</div>
+    <div class="section-title">Meeting words</div>
+    <div class="section-sub">8 minutes · Click and complete</div>
+    <div class="tip-box">Click a word, then click a blank. Click a filled blank to remove the word.</div>
+    <div class="vocab-grid" id="wordBank"></div>
+    <div id="gapFeedback" class="feedback-msg"></div>
+    <div class="card"><div id="gapSentences"></div></div>
+    <div class="nav-row">
+      <button class="btn" onclick="goTo(0)">← Back</button>
+      <div class="nav-right"><span class="time-badge">8 min</span><button class="btn" onclick="checkGaps()">Check answers</button><button class="btn primary" onclick="goTo(2)">Next: grammar →</button></div>
+    </div>
+  </section>
+
+  <section class="section" id="sec2">
+    <div class="section-header">Stage 3 — Grammar 1</div>
+    <div class="section-title">Prepositions of time</div>
+    <div class="section-sub">8 minutes · at, on, in</div>
+    <div class="card">
+      <p style="font-weight:700;margin-bottom:10px">Use:</p>
+      <div class="bullet-row"><span class="bullet-dot"></span><span><strong>at</strong> + time: at 9:00, at lunchtime</span></div>
+      <div class="bullet-row"><span class="bullet-dot"></span><span><strong>on</strong> + day/date: on Monday, on 12 June</span></div>
+      <div class="bullet-row"><span class="bullet-dot"></span><span><strong>in</strong> + month/part of day: in May, in the morning</span></div>
+    </div>
+    <div id="prepQuiz"></div>
+    <div class="nav-row">
+      <button class="btn" onclick="goTo(1)">← Back</button>
+      <div class="nav-right"><span class="time-badge">8 min</span><button class="btn primary" onclick="goTo(3)">Next: useful phrases →</button></div>
+    </div>
+  </section>
+
+  <section class="section" id="sec3">
+    <div class="section-header">Stage 4 — Functional language</div>
+    <div class="section-title">Useful meeting phrases</div>
+    <div class="section-sub">8 minutes · Notice and practise</div>
+    <div id="funcContent"></div>
+    <div class="nav-row">
+      <button class="btn" onclick="goTo(2)">← Back</button>
+      <div class="nav-right"><span class="time-badge">8 min</span><button class="btn primary" onclick="goTo(4)">Next: grammar quiz →</button></div>
+    </div>
+  </section>
+
+  <section class="section" id="sec4">
+    <div class="section-header">Stage 5 — Grammar 2</div>
+    <div class="section-title">Polite questions</div>
+    <div class="section-sub">10 minutes · Multiple-choice practice</div>
+    <div id="drillWrap"></div>
+    <div class="nav-row">
+      <button class="btn" onclick="goTo(3)">← Back</button>
+      <div class="nav-right"><span class="time-badge">10 min</span><button class="btn primary" id="drillNextBtn" onclick="goTo(5)" style="display:none">Next: diary task →</button></div>
+    </div>
+  </section>
+
+  <section class="section" id="sec5">
+    <div class="section-header">Stage 6 — Vocabulary 2</div>
+    <div class="section-title">Find a time that works</div>
+    <div class="section-sub">7 minutes · Reading diaries</div>
+    <div class="grid2">
+      <div class="diary-card">
+        <div class="diary-name">Ana</div>
+        <div class="diary-slot"><span>Monday 9:00</span><span class="busy">Busy</span></div>
+        <div class="diary-slot"><span>Monday 14:00</span><span class="free">Free</span></div>
+        <div class="diary-slot"><span>Tuesday 10:00</span><span class="free">Free</span></div>
+        <div class="diary-slot"><span>Wednesday 11:00</span><span class="free">Free</span></div>
+      </div>
+      <div class="diary-card">
+        <div class="diary-name">Ben</div>
+        <div class="diary-slot"><span>Monday 9:00</span><span class="free">Free</span></div>
+        <div class="diary-slot"><span>Monday 14:00</span><span class="busy">Busy</span></div>
+        <div class="diary-slot"><span>Tuesday 10:00</span><span class="busy">Busy</span></div>
+        <div class="diary-slot"><span>Wednesday 11:00</span><span class="free">Free</span></div>
+      </div>
+    </div>
+    <div class="card-muted">
+      <p style="font-weight:700;margin-bottom:8px">Answer:</p>
+      <p>1. When are Ana and Ben both free?</p>
+      <p>2. Complete: “Shall we meet ______ Wednesday ______ 11 o’clock?”</p>
+      <p>3. Say one polite sentence to confirm the meeting.</p>
+    </div>
+    <div class="nav-row">
+      <button class="btn" onclick="goTo(4)">← Back</button>
+      <div class="nav-right"><span class="time-badge">7 min</span><button class="btn primary" onclick="goTo(6)">Next: role play →</button></div>
+    </div>
+  </section>
+
+  <section class="section" id="sec6">
+    <div class="section-header">Stage 7 — Speaking</div>
+    <div class="section-title">Role play: arrange and change a meeting</div>
+    <div class="section-sub">9 minutes · Pair work</div>
+    <div id="roleplayContent"></div>
+    <div class="nav-row">
+      <button class="btn" onclick="goTo(5)">← Back</button>
+      <div class="nav-right"><span class="time-badge">9 min</span><button class="btn primary" onclick="goTo(7)">Finish lesson →</button></div>
+    </div>
+  </section>
+
+  <section class="section" id="sec7">
+    <div class="section-header">Stage 8 — Review and writing</div>
+    <div class="section-title">Lesson complete</div>
+    <div class="section-sub">3 minutes · Review and homework</div>
+    <div id="summaryContent"></div>
+    <div class="nav-row"><button class="btn" onclick="goTo(6)">← Back</button><button class="btn primary" onclick="restartLesson()">Start again ↺</button></div>
+  </section>
+</div>
+</div>
+
+<script>
+let selectedWord=null, gapAnswers={}, drillScore=0, drillIndex=0, drillDone=false, prepIndex=0, prepScore=0;
+
+const WORDS=[
+ {word:'available',def:'free; not busy'},
+ {word:'meeting',def:'a time when people talk about work'},
+ {word:'agenda',def:'a list of things to talk about'},
+ {word:'confirm',def:'say that something is certain'},
+ {word:'cancel',def:'stop a planned meeting'},
+ {word:'change',def:'make something different'},
+ {word:'invite',def:'ask someone to come'},
+ {word:'office',def:'a place where people work'}
+];
+const GAPS=[
+ {id:'g0',before:'Are you ',blank:'available',after:' on Wednesday morning?'},
+ {id:'g1',before:'Can we have a ',blank:'meeting',after:' to talk about the project?'},
+ {id:'g2',before:'Please send me the ',blank:'agenda',after:' before the meeting.'},
+ {id:'g3',before:'Can you ',blank:'confirm',after:' the time by email?'},
+ {id:'g4',before:'I am sorry, but I need to ',blank:'cancel',after:' the meeting.'},
+ {id:'g5',before:'Can we ',blank:'change',after:' the time to 3 o’clock?'},
+ {id:'g6',before:'I will send you a calendar ',blank:'invite',after:' today.'},
+ {id:'g7',before:'Let’s meet at my ',blank:'office',after:' on Monday.'}
+];
+const PREP_QS=[
+ {q:'The meeting is ___ Monday.',opts:['at','on','in'],ans:1},
+ {q:'Can we meet ___ 10 o’clock?',opts:['at','on','in'],ans:0},
+ {q:'I am free ___ the morning.',opts:['at','on','in'],ans:2},
+ {q:'The call is ___ Friday afternoon.',opts:['at','on','in'],ans:1},
+ {q:'Let’s meet ___ May.',opts:['at','on','in'],ans:2},
+ {q:'Lunch is ___ 1:00.',opts:['at','on','in'],ans:0}
+];
+const FUNC=[
+ {label:'Asking for a meeting',phrases:['Can we have a meeting?','I would like to talk about the project.','Are you free this week?']},
+ {label:'Suggesting a time',phrases:['How about Monday at 10?','Can we meet on Wednesday?','Is 2 o’clock OK for you?']},
+ {label:'Saying yes or no',phrases:['Yes, that works for me.','I’m sorry, I’m busy then.','Can we meet later?']},
+ {label:'Changing a meeting',phrases:['I’m sorry, I need to change the time.','Can we move the meeting to Friday?','Something has come up.']},
+ {label:'Confirming',phrases:['So, Monday at 10.','I’ll send a calendar invite.','See you then.']}
+];
+const DRILL_QS=[
+ {q:'Choose the most polite question.',opts:['Meet Monday?','Can we meet on Monday?','You meet me Monday?','Meeting Monday now.'],ans:1,explain:'Use “Can we...?” for a simple polite A2 question.'},
+ {q:'Choose the correct sentence.',opts:['Are you free at Tuesday?','Are you free on Tuesday?','Are you free in Tuesday?','Do you free on Tuesday?'],ans:1,explain:'Use “on” with days.'},
+ {q:'Choose the correct time sentence.',opts:['Let’s meet at 3 o’clock.','Let’s meet on 3 o’clock.','Let’s meet in 3 o’clock.','Let’s meet by 3 o’clock.'],ans:0,explain:'Use “at” with clock times.'},
+ {q:'You cannot come. What do you say?',opts:['No.','I’m sorry, I’m busy then.','Bad time.','You choose other.'],ans:1,explain:'Give a polite apology and reason.'},
+ {q:'You want to change the meeting. Choose the best sentence.',opts:['Change it.','I need change meeting.','Can we change the time?','The time no.'],ans:2,explain:'Use “Can we + verb...?” for a clear polite request.'},
+ {q:'Choose the best confirmation.',opts:['So, Wednesday at 11. See you then.','Wednesday maybe maybe.','We talk later.','OK bye.'],ans:0,explain:'Repeat the day and time to confirm clearly.'}
+];
+const ROLE=[
+ ['A','[Call Ben. Say hello. Say you want to arrange a meeting about the project.]'],
+ ['B','Hi Ana. Yes, of course. When would you like to meet?'],
+ ['A','[Ask: Are you free on Monday at 2 o’clock?]'],
+ ['B','Sorry, I’m busy then. Are you free on Wednesday morning?'],
+ ['A','[Check your diary. Say yes. Suggest 11 o’clock.]'],
+ ['B','Wednesday at 11 works for me. Where shall we meet?'],
+ ['A','[Suggest your office. Say you will send a calendar invite.]'],
+ ['B','Great. See you on Wednesday at 11.'],
+ ['A','[Later: call again. Say sorry and ask to change the meeting to Thursday.]'],
+ ['B','That’s OK. Thursday morning works for me.'],
+ ['A','[Confirm the new meeting and close the call politely.]']
+];
+
+function goTo(n){
+ document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===n));
+ document.querySelectorAll('.step-dot').forEach((d,i)=>{d.classList.remove('active','done'); if(i===n)d.classList.add('active'); else if(i<n)d.classList.add('done');});
+ if(n===1)buildGaps(); if(n===2)buildPrep(); if(n===3)buildFunctional(); if(n===4&&!drillDone)buildDrill(); if(n===6)buildRoleplay(); if(n===7)buildSummary();
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function buildGaps(){
+ const bank=document.getElementById('wordBank'); bank.innerHTML='';
+ WORDS.forEach(w=>{let c=document.createElement('div');c.className='vocab-chip';c.textContent=w.word;c.title=w.def;c.id='chip_'+w.word;c.onclick=()=>selectWord(w.word);bank.appendChild(c);});
+ const ct=document.getElementById('gapSentences'); ct.innerHTML='';
+ GAPS.forEach(g=>{let p=document.createElement('p');p.className='gap-sentence';p.innerHTML=g.before+`<span class="gap" id="${g.id}" onclick="fillGap('${g.id}')"></span>`+g.after;ct.appendChild(p);});
+}
+function selectWord(w){document.querySelectorAll('.vocab-chip').forEach(c=>c.classList.remove('selected')); selectedWord=selectedWord===w?null:w; if(selectedWord)document.getElementById('chip_'+w).classList.add('selected');}
+function fillGap(id){
+ const gap=document.getElementById(id); const cur=gap.textContent.trim();
+ if(cur){document.getElementById('chip_'+cur)?.classList.remove('used');gap.textContent='';gap.classList.remove('correct','wrong');delete gapAnswers[id];return;}
+ if(!selectedWord)return; const chip=document.getElementById('chip_'+selectedWord); if(chip.classList.contains('used'))return;
+ gap.textContent=selectedWord; gapAnswers[id]=selectedWord; chip.classList.add('used'); selectedWord=null; document.querySelectorAll('.vocab-chip').forEach(c=>c.classList.remove('selected'));
+}
+function checkGaps(){
+ let correct=0; GAPS.forEach(g=>{const gap=document.getElementById(g.id); const val=gap.textContent.trim(); if(val===g.blank){gap.classList.add('correct');gap.classList.remove('wrong');correct++;}else if(val){gap.classList.add('wrong');gap.classList.remove('correct');}});
+ const fb=document.getElementById('gapFeedback'); fb.className='feedback-msg show '+(correct===GAPS.length?'ok':'err'); fb.textContent=correct===GAPS.length?'All correct!':'You got '+correct+' of '+GAPS.length+'. Try again.';
+}
+function buildPrep(){prepIndex=0;prepScore=0;renderPrep();}
+function renderPrep(){
+ const wrap=document.getElementById('prepQuiz');
+ if(prepIndex>=PREP_QS.length){wrap.innerHTML=`<div class="card" style="text-align:center"><div class="score-circle"><span class="score-num">${prepScore}/${PREP_QS.length}</span><span class="score-lbl">score</span></div><p>Good work. Remember: <strong>at</strong> time, <strong>on</strong> day, <strong>in</strong> month or morning.</p><button class="btn" style="margin-top:12px" onclick="buildPrep()">Try again</button></div>`;return;}
+ const q=PREP_QS[prepIndex];
+ wrap.innerHTML=`<div class="card"><p style="font-size:12px;color:var(--muted);margin-bottom:8px">Question ${prepIndex+1} of ${PREP_QS.length}</p><p style="font-weight:700;margin-bottom:14px">${q.q}</p><div class="drill-options">${q.opts.map((o,i)=>`<button class="opt-btn" onclick="answerPrep(${i})">${o}</button>`).join('')}</div><div id="prepFb" class="feedback-msg"></div></div>`;
+}
+function answerPrep(i){const q=PREP_QS[prepIndex];document.querySelectorAll('#prepQuiz .opt-btn').forEach(b=>b.disabled=true);document.querySelectorAll('#prepQuiz .opt-btn')[q.ans].classList.add('correct');const fb=document.getElementById('prepFb');fb.className='feedback-msg show '+(i===q.ans?'ok':'err');fb.textContent=i===q.ans?'Correct!':'Not quite. The answer is '+q.opts[q.ans]+'.'; if(i===q.ans)prepScore++; setTimeout(()=>{prepIndex++;renderPrep();},900);}
+function buildFunctional(){
+ const wrap=document.getElementById('funcContent');wrap.innerHTML='';
+ FUNC.forEach(cat=>{let html=`<div class="card"><p class="label" style="color:var(--blue)">${cat.label}</p>`;cat.phrases.forEach(p=>html+=`<div class="bullet-row"><span class="bullet-dot"></span><span>${p}</span></div>`);html+='</div>';wrap.innerHTML+=html;});
+ wrap.innerHTML+=`<div class="tip-box"><strong>Grammar focus:</strong> Use “Can we...?”, “Are you free...?”, and “How about...?” for simple A2 meeting questions.</div>`;
+}
+function buildDrill(){drillIndex=0;drillScore=0;document.getElementById('drillNextBtn').style.display='none';renderDrill();}
+function renderDrill(){
+ const wrap=document.getElementById('drillWrap');
+ if(drillIndex>=DRILL_QS.length){drillDone=true;document.getElementById('drillNextBtn').style.display='inline-block';wrap.innerHTML=`<div class="card" style="text-align:center"><div class="score-circle"><span class="score-num">${drillScore}/${DRILL_QS.length}</span><span class="score-lbl">score</span></div><p>${drillScore>=4?'Great job!':'Review the phrases and try again.'}</p></div>`;return;}
+ const q=DRILL_QS[drillIndex];
+ wrap.innerHTML=`<div class="card"><p style="font-size:12px;color:var(--muted);margin-bottom:8px">Question ${drillIndex+1} of ${DRILL_QS.length}</p><p style="font-weight:700;margin-bottom:14px">${q.q}</p><div class="drill-options">${q.opts.map((o,i)=>`<button class="opt-btn" onclick="answerDrill(${i})">${o}</button>`).join('')}</div><div id="drillFb" class="feedback-msg"></div><button id="drillContinue" class="btn primary" style="display:none;margin-top:10px" onclick="drillIndex++;renderDrill()">Next question →</button></div>`;
+}
+function answerDrill(i){const q=DRILL_QS[drillIndex];document.querySelectorAll('#drillWrap .opt-btn').forEach(b=>b.disabled=true);document.querySelectorAll('#drillWrap .opt-btn')[q.ans].classList.add('correct');if(i!==q.ans)document.querySelectorAll('#drillWrap .opt-btn')[i].classList.add('wrong');else drillScore++;const fb=document.getElementById('drillFb');fb.className='feedback-msg show '+(i===q.ans?'ok':'err');fb.textContent=(i===q.ans?'Correct! ':'Not quite. ')+q.explain;document.getElementById('drillContinue').style.display='inline-block';}
+function buildRoleplay(){
+ const wrap=document.getElementById('roleplayContent');wrap.innerHTML=`<div class="tip-box">Student A = Ana. Student B = Ben. First arrange a meeting. Then change the meeting.</div>`;
+ ROLE.forEach(line=>wrap.innerHTML+=`<div class="${line[0]==='A'?'roleplay-box':'int-box'}"><div class="label">${line[0]==='A'?'Ana — Student A':'Ben — Student B'}</div><div>${line[1]}</div></div>`);
+ wrap.innerHTML+=`<div class="card-muted"><p style="font-weight:700;margin-bottom:8px">Extra speaking</p><p>Swap roles. Use new days and times. Try to speak without reading every word.</p></div>`;
+}
+function buildSummary(){
+ document.getElementById('summaryContent').innerHTML=`<div class="card" style="text-align:center"><p style="font-size:22px;font-weight:800">Arranging Meetings</p><p style="color:var(--muted)">A2 level · 60 minutes</p></div>
+ <div class="card"><p style="font-weight:700;margin-bottom:10px">Today you practised:</p>
+ <div class="bullet-row"><span class="bullet-dot"></span><span>8 meeting vocabulary words</span></div>
+ <div class="bullet-row"><span class="bullet-dot"></span><span>Prepositions of time: at, on, in</span></div>
+ <div class="bullet-row"><span class="bullet-dot"></span><span>Polite questions: Can we...? Are you free...? How about...?</span></div>
+ <div class="bullet-row"><span class="bullet-dot"></span><span>Reading diaries and finding a free time</span></div>
+ <div class="bullet-row"><span class="bullet-dot"></span><span>A role play to arrange and change a meeting</span></div></div>
+ <div class="card-muted"><p style="font-weight:700;margin-bottom:8px">Homework</p><p>Write a short email to confirm a meeting. Include the day, time, place, and one polite closing sentence.</p></div>`;
+}
+function restartLesson(){selectedWord=null;gapAnswers={};drillDone=false;drillScore=0;drillIndex=0;goTo(0);}
+buildGaps();buildFunctional();buildSummary();
+</script>
+</body>
+</html>

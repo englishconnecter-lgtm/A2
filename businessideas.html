@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talking About a Business Idea — A2 Lesson</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:#f7f5ff; --surface:#ffffff; --surface-soft:#f5f2ff; --text:#201d35; --muted:#6c6688;
+    --border:rgba(83,74,183,.16); --primary:#6f63d8; --primary-dark:#3f379b;
+    --green:#3f7f2e; --green-soft:#eaf5e4; --blue:#185FA5; --blue-soft:#e8f2ff;
+    --amber:#9b6108; --amber-soft:#fff2d9; --red:#a53b44; --red-soft:#fdecee;
+    --radius:18px; --shadow:0 18px 48px rgba(34,28,84,.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#151322; --surface:#211f33; --surface-soft:#2a2740; --text:#f5f2ff; --muted:#bbb4da; --border:rgba(255,255,255,.12); --blue-soft:rgba(24,95,165,.22); --green-soft:rgba(63,127,46,.22); --amber-soft:rgba(155,97,8,.22); --red-soft:rgba(165,59,68,.22); }
+  }
+  body {
+    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top, rgba(111,99,216,.18), transparent 32%), linear-gradient(180deg,var(--bg),#eeeaf8);
+    color:var(--text); min-height:100vh; padding:32px 18px 56px;
+  }
+  .outer{max-width:960px;margin:0 auto}
+  .page-header{margin-bottom:22px;background:linear-gradient(135deg,#3f379b,#185FA5);color:white;border-radius:30px;padding:32px;box-shadow:var(--shadow)}
+  .page-header h1{font-size:clamp(2rem,4vw,3rem);line-height:1.08;margin-bottom:10px}
+  .page-header p{color:rgba(255,255,255,.84);font-size:15px}
+  .lesson-wrap{background:rgba(255,255,255,.9);border:1px solid var(--border);border-radius:30px;padding:28px;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+  @media (prefers-color-scheme: dark){.lesson-wrap{background:rgba(33,31,51,.9)}}
+  .progress-bar{display:flex;align-items:center;gap:8px;margin-bottom:28px;padding:14px;background:var(--surface-soft);border:1px solid var(--border);border-radius:22px}
+  .step-dot{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--muted);background:var(--surface);cursor:pointer;flex-shrink:0}
+  .step-dot.active{background:linear-gradient(135deg,var(--primary),var(--blue));color:#fff;border-color:transparent}
+  .step-dot.done{background:var(--green-soft);color:var(--green);border-color:rgba(63,127,46,.28)}
+  .step-line{height:2px;flex:1;background:linear-gradient(90deg,var(--border),transparent)}
+  .section{display:none}.section.active{display:block;animation:fadeUp .25s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .section-header{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--primary);background:var(--surface-soft);border:1px solid var(--border);border-radius:999px;padding:6px 11px;margin-bottom:10px}
+  .section-title{font-size:clamp(1.65rem,3vw,2.15rem);line-height:1.12;margin-bottom:8px}
+  .section-sub{font-size:14px;color:var(--muted);margin-bottom:20px}
+  .card,.card-muted,.idea-card{border:1px solid var(--border);border-radius:22px;padding:18px 20px;margin-bottom:14px;box-shadow:0 10px 28px rgba(34,28,84,.06)}
+  .card{background:var(--surface)}.card-muted{background:var(--surface-soft)}
+  .hero-card{min-height:330px;border-radius:26px;overflow:hidden;margin-bottom:16px;background:linear-gradient(115deg,rgba(27,22,75,.82),rgba(111,99,216,.55)),url('https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;display:flex;align-items:end;padding:28px;color:white}
+  .hero-card h2{font-size:34px;line-height:1.05;max-width:12ch;margin-bottom:12px}.hero-card p{max-width:58ch;color:rgba(255,255,255,.88);line-height:1.7}
+  .vocab-grid,.match-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin-bottom:16px}
+  .vocab-chip{background:var(--blue-soft);border:1px solid rgba(24,95,165,.18);border-radius:14px;padding:10px 12px;font-size:13px;font-weight:700;color:var(--blue);text-align:center;cursor:pointer;user-select:none}
+  .vocab-chip.selected{outline:3px solid rgba(111,99,216,.28)}.vocab-chip.used{opacity:.5;background:var(--surface-soft);color:var(--muted)}
+  .gap-sentence{font-size:15px;line-height:2.25;margin-bottom:10px}.gap{display:inline-block;min-width:115px;min-height:28px;border-bottom:2px solid var(--primary);text-align:center;color:var(--primary);font-weight:700;cursor:pointer;background:rgba(111,99,216,.06);border-radius:8px 8px 0 0}
+  .correct{background:var(--green-soft)!important;border-color:rgba(63,127,46,.3)!important;color:var(--green)!important}.wrong{background:var(--red-soft)!important;border-color:rgba(165,59,68,.3)!important;color:var(--red)!important}
+  .feedback-msg{display:none;padding:12px 14px;border-radius:14px;margin-bottom:14px;font-size:13px}.feedback-msg.show{display:block}.ok{background:var(--green-soft);color:var(--green);border:1px solid rgba(63,127,46,.22)}.err{background:var(--red-soft);color:var(--red);border:1px solid rgba(165,59,68,.22)}
+  .btn{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px 18px;font-size:14px;font-weight:700;color:var(--text);cursor:pointer}.btn:hover{background:var(--surface-soft)}.btn.primary{background:linear-gradient(135deg,var(--primary),var(--blue));color:#fff;border-color:transparent}
+  .nav-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:22px}.nav-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.time-badge{font-size:12px;color:var(--primary-dark);background:var(--surface-soft);border:1px solid var(--border);border-radius:999px;padding:7px 11px}
+  .opt-btn{background:var(--surface);border:1px solid var(--border);border-radius:15px;padding:12px 14px;text-align:left;cursor:pointer;line-height:1.5;color:var(--text)}
+  .drill-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}.progress-counter{font-size:12px;color:var(--muted);margin-bottom:8px}.drill-q{font-weight:700;margin-bottom:14px;line-height:1.6}.explain-box{display:none;margin-top:10px;padding:12px;border-radius:14px;font-size:13px}
+  .bullet-row{display:flex;gap:8px;margin-bottom:8px;line-height:1.6}.bullet-dot{width:7px;height:7px;border-radius:50%;background:var(--primary);margin-top:8px;flex-shrink:0}
+  .role-card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}.role-card{border-radius:20px;padding:16px 18px;border:1px solid var(--border)}.role-a{background:var(--blue-soft)}.role-b{background:var(--amber-soft)}
+  .roleplay-box,.int-box{border-radius:18px;padding:14px 16px;margin-bottom:10px;border-left:4px solid}.roleplay-box{background:var(--blue-soft);border-left-color:var(--blue)}.int-box{background:var(--amber-soft);border-left-color:var(--amber)}.label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+  .idea-card{background:linear-gradient(180deg,var(--surface-soft),var(--surface));}.idea-row{display:flex;gap:10px;margin-bottom:7px;font-size:14px}.idea-key{min-width:100px;font-weight:800;color:var(--primary)}.idea-val{color:var(--text);line-height:1.5}
+  .tag{display:inline-block;font-size:11px;font-weight:800;border-radius:999px;padding:5px 10px;margin-right:5px;background:var(--blue-soft);color:var(--blue)}
+  @media(max-width:720px){.drill-options,.role-card-grid{grid-template-columns:1fr}.hero-card h2{font-size:29px}.lesson-wrap{padding:20px}.page-header{padding:26px 22px}}
+</style>
+</head>
+<body>
+<div class="outer">
+  <div class="page-header">
+    <h1>Talking About a Business Idea</h1>
+    <p>A2 level · 60-minute interactive lesson</p>
+  </div>
+  <div class="lesson-wrap">
+    <div class="progress-bar" id="progressBar">
+      <div class="step-dot active" onclick="goTo(0)">1</div><div class="step-line"></div>
+      <div class="step-dot" onclick="goTo(1)">2</div><div class="step-line"></div>
+      <div class="step-dot" onclick="goTo(2)">3</div><div class="step-line"></div>
+      <div class="step-dot" onclick="goTo(3)">4</div><div class="step-line"></div>
+      <div class="step-dot" onclick="goTo(4)">5</div><div class="step-line"></div>
+      <div class="step-dot" onclick="goTo(5)">6</div><div class="step-line"></div>
+      <div class="step-dot" onclick="goTo(6)">7</div><div class="step-line"></div>
+      <div class="step-dot" onclick="goTo(7)">8</div>
+    </div>
+
+    <div class="section active" id="sec0">
+      <div class="section-header">Stage 1 — Warm-up</div>
+      <div class="section-title">A simple business idea</div>
+      <div class="section-sub">5 minutes · speaking</div>
+      <div class="hero-card"><div><h2>Start a small business</h2><p>In this lesson, students talk about a simple business idea, learn useful vocabulary, practise grammar for explaining ideas, and finish with a short pitch.</p></div></div>
+      <div class="card-muted">
+        <p style="font-weight:700;margin-bottom:10px">Discuss with a partner:</p>
+        <p>1. Would you like to have a small business? Why / why not?</p>
+        <p>2. What small businesses are popular in your town?</p>
+        <p>3. What do you need to start a small business?</p>
+      </div>
+      <div class="card">
+        <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Today’s example business:</p>
+        <div class="idea-card">
+          <div class="idea-row"><span class="idea-key">Name</span><span class="idea-val">LunchBox</span></div>
+          <div class="idea-row"><span class="idea-key">Idea</span><span class="idea-val">Healthy lunch boxes delivered to offices.</span></div>
+          <div class="idea-row"><span class="idea-key">Customers</span><span class="idea-val">Office workers who want quick, healthy food.</span></div>
+          <div class="idea-row"><span class="idea-key">Price</span><span class="idea-val">€8 per lunch box.</span></div>
+          <div class="idea-row"><span class="idea-key">Need</span><span class="idea-val">€2,000 to buy boxes, ingredients, and online adverts.</span></div>
+        </div>
+        <span class="tag">simple pitch</span><span class="tag">food business</span><span class="tag">A2 English</span>
+      </div>
+      <div class="nav-row"><span class="time-badge">5 min</span><button class="btn primary" onclick="goTo(1)">Next: vocabulary →</button></div>
+    </div>
+
+    <div class="section" id="sec1">
+      <div class="section-header">Stage 2 — Vocabulary 1</div>
+      <div class="section-title">Business words</div>
+      <div class="section-sub">10 minutes · click and complete</div>
+      <div class="tip-box card-muted">Click a word, then click a blank. Click a filled blank to remove the word.</div>
+      <div class="vocab-grid" id="wordBank"></div>
+      <div id="gapFeedback" class="feedback-msg"></div>
+      <div class="card"><div id="gapSentences"></div></div>
+      <div class="nav-row"><button class="btn" onclick="goTo(0)">← Back</button><div class="nav-right"><span class="time-badge">10 min</span><button class="btn" onclick="checkGaps()">Check answers</button><button class="btn primary" onclick="goTo(2)">Next: vocab practice →</button></div></div>
+    </div>
+
+    <div class="section" id="sec2">
+      <div class="section-header">Stage 3 — Vocabulary 2</div>
+      <div class="section-title">Choose the correct word</div>
+      <div class="section-sub">8 minutes · extra vocabulary practice</div>
+      <div id="vocabQuiz"></div>
+      <div class="nav-row"><button class="btn" onclick="goTo(1)">← Back</button><div class="nav-right"><span class="time-badge">8 min</span><button class="btn primary" onclick="goTo(3)">Next: useful phrases →</button></div></div>
+    </div>
+
+    <div class="section" id="sec3">
+      <div class="section-header">Stage 4 — Functional language</div>
+      <div class="section-title">Useful phrases for ideas</div>
+      <div class="section-sub">8 minutes · study and repeat</div>
+      <div id="funcContent"></div>
+      <div class="nav-row"><button class="btn" onclick="goTo(2)">← Back</button><div class="nav-right"><span class="time-badge">8 min</span><button class="btn primary" onclick="goTo(4)">Next: grammar 1 →</button></div></div>
+    </div>
+
+    <div class="section" id="sec4">
+      <div class="section-header">Stage 5 — Grammar 1</div>
+      <div class="section-title">Present simple for business facts</div>
+      <div class="section-sub">10 minutes · grammar practice</div>
+      <div class="card-muted">
+        <p><strong>Use present simple</strong> to explain a business idea.</p>
+        <p>We sell lunch boxes. The business helps office workers. Customers pay €8.</p>
+      </div>
+      <div id="grammarOne"></div>
+      <div class="nav-row"><button class="btn" onclick="goTo(3)">← Back</button><div class="nav-right"><span class="time-badge">10 min</span><button class="btn primary" onclick="goTo(5)">Next: grammar 2 →</button></div></div>
+    </div>
+
+    <div class="section" id="sec5">
+      <div class="section-header">Stage 6 — Grammar 2</div>
+      <div class="section-title">Would like + to + verb</div>
+      <div class="section-sub">9 minutes · requests and plans</div>
+      <div class="card-muted">
+        <p><strong>Use would like to</strong> to talk about plans politely.</p>
+        <p>I would like to open a small café. We would like to sell healthy food.</p>
+      </div>
+      <div id="drillWrap"></div>
+      <div class="nav-row"><button class="btn" onclick="goTo(4)">← Back</button><div class="nav-right"><span class="time-badge">9 min</span><button class="btn primary" id="drillNextBtn" onclick="goTo(6)" style="display:none">Next: role play →</button></div></div>
+    </div>
+
+    <div class="section" id="sec6">
+      <div class="section-header">Stage 7 — Role play</div>
+      <div class="section-title">Pitch LunchBox</div>
+      <div class="section-sub">15 minutes · pair work</div>
+      <div class="card-muted">Student A presents LunchBox. Student B asks simple questions. Then swap roles and pitch your own small business idea.</div>
+      <div id="roleplayContent"></div>
+      <div class="nav-row"><button class="btn" onclick="goTo(5)">← Back</button><div class="nav-right"><span class="time-badge">15 min</span><button class="btn primary" onclick="goTo(7)">Finish lesson →</button></div></div>
+    </div>
+
+    <div class="section" id="sec7">
+      <div class="section-header">Stage 8 — Summary</div>
+      <div class="section-title">Lesson complete!</div>
+      <div class="section-sub">5 minutes · review</div>
+      <div id="summaryContent"></div>
+      <div class="nav-row"><button class="btn" onclick="goTo(6)">← Back</button><button class="btn primary" onclick="restartLesson()">Start again ↺</button></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentSection=0, selectedWord=null, gapAnswers={}, drillScore=0, drillIndex=0, drillDone=false;
+
+const WORDS=[
+  {word:'customer',def:'a person who buys something'},
+  {word:'price',def:'how much something costs'},
+  {word:'product',def:'something a business sells'},
+  {word:'idea',def:'a plan or thought'},
+  {word:'sell',def:'to give something for money'},
+  {word:'cost',def:'the money you need to make or buy something'},
+  {word:'profit',def:'money a business keeps after costs'},
+  {word:'advert',def:'a message that tells people about a product'}
+];
+const GAPS=[
+  {id:'g0',before:'A ',blank:'customer',after:' buys a lunch box from the business.'},
+  {id:'g1',before:'The ',blank:'price',after:' is €8 for one lunch box.'},
+  {id:'g2',before:'Our main ',blank:'product',after:' is a healthy lunch box.'},
+  {id:'g3',before:'My business ',blank:'idea',after:' is simple and easy to explain.'},
+  {id:'g4',before:'We want to ',blank:'sell',after:' food to office workers.'},
+  {id:'g5',before:'The ',blank:'cost',after:' of one lunch box is about €4.'},
+  {id:'g6',before:'If we sell many boxes, we can make a ',blank:'profit',after:'.'},
+  {id:'g7',before:'We can use an online ',blank:'advert',after:' to find new customers.'}
+];
+const VOCAB_QS=[
+  {q:'A person who buys something is a...', opts:['customer','product','profit'], ans:0},
+  {q:'The money you ask people to pay is the...', opts:['cost','price','idea'], ans:1},
+  {q:'Something you sell is a...', opts:['product','advert','customer'], ans:0},
+  {q:'Money you keep after costs is...', opts:['price','profit','office'], ans:1},
+  {q:'A message online about your business is an...', opts:['advert','idea','cost'], ans:0}
+];
+const FUNC_CATS=[
+  {label:'Introducing the idea', phrases:['My business idea is called LunchBox.','It is a healthy lunch delivery service.','We deliver food to offices.']},
+  {label:'Explaining customers', phrases:['Our customers are office workers.','They want quick and healthy food.','They do not have much time at lunch.']},
+  {label:'Explaining price and money', phrases:['One lunch box costs €8.','It costs about €4 to make one box.','We can make about €4 profit on each box.']},
+  {label:'Asking simple questions', phrases:['Who are your customers?','How much does it cost?','Where do you sell it?','Why is it a good idea?']},
+  {label:'Finishing a pitch', phrases:['Thank you for listening.','Do you have any questions?','I think this business can work well.']}
+];
+const GRAMMAR_ONE=[
+  {q:'Choose the correct sentence.', opts:['We sells lunch boxes.','We sell lunch boxes.','We selling lunch boxes.'], ans:1, explain:'Use present simple: we sell.'},
+  {q:'Choose the correct sentence.', opts:['The business helps office workers.','The business help office workers.','The business helping office workers.'], ans:0, explain:'With he/she/it or singular noun, add -s: helps.'},
+  {q:'Complete: Customers ___ €8 for one lunch box.', opts:['pays','pay','paying'], ans:1, explain:'Plural subject: customers pay.'},
+  {q:'Complete: LunchBox ___ healthy food.', opts:['deliver','delivers','delivering'], ans:1, explain:'Singular business name: LunchBox delivers.'}
+];
+const DRILL_QS=[
+  {q:'Choose the correct sentence.', opts:['I would like open a small café.','I would like to open a small café.','I like to opening a small café.'], ans:1, explain:'Use would like + to + verb.'},
+  {q:'Choose the correct sentence.', opts:['We would like to sell healthy lunches.','We would like selling healthy lunches.','We would to like sell lunches.'], ans:0, explain:'After would like, use to + verb.'},
+  {q:'Choose the best question.', opts:['Would you like to buy a box?','Would you like buy a box?','Do you would like a box?'], ans:0, explain:'Question form: Would you like to...?'},
+  {q:'Complete: I ___ to find more customers.', opts:['would like','would like to','like would'], ans:1, explain:'Before a verb, use would like to.'}
+];
+const ROLEPLAY=[
+  {speaker:'Investor',text:'Hello. Please tell me about your business idea.'},
+  {speaker:'Founder',text:'[Say hello. Say the business name is LunchBox. Explain: healthy lunch boxes for office workers.]'},
+  {speaker:'Investor',text:'Who are your customers?'},
+  {speaker:'Founder',text:'[Explain: office workers. They are busy. They want quick and healthy food.]'},
+  {speaker:'Investor',text:'How much is one lunch box?'},
+  {speaker:'Founder',text:'[Say the price is €8. Say it costs about €4 to make one box.]'},
+  {speaker:'Investor',text:'How can you find customers?'},
+  {speaker:'Founder',text:'[Say you can use online adverts and visit offices.]'},
+  {speaker:'Investor',text:'Why is it a good idea?'},
+  {speaker:'Founder',text:'[Say it is easy, healthy, and useful for busy people. Ask if the investor has another question.]'},
+  {speaker:'Investor',text:'Thank you. I like your idea. Please send me more information.'},
+  {speaker:'Founder',text:'[Thank the investor. Say you would like to meet again next week.]'}
+];
+
+function goTo(n){
+  document.querySelectorAll('.section').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.step-dot').forEach((d,i)=>{d.classList.remove('active','done');if(i===n)d.classList.add('active');else if(i<n)d.classList.add('done');});
+  currentSection=n;
+  if(n===1)buildGaps(); if(n===2)buildVocabQuiz(); if(n===3)buildFunctional(); if(n===4)buildGrammarOne(); if(n===5&&!drillDone)buildDrill(); if(n===6)buildRoleplay(); if(n===7)buildSummary();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function buildGaps(){
+  const bank=document.getElementById('wordBank'); bank.innerHTML='';
+  WORDS.forEach(w=>{const c=document.createElement('div');c.className='vocab-chip';c.textContent=w.word;c.id='chip_'+w.word;c.title=w.def;c.onclick=()=>selectWord(w.word);bank.appendChild(c);});
+  const ct=document.getElementById('gapSentences'); ct.innerHTML='';
+  GAPS.forEach(g=>{const p=document.createElement('p');p.className='gap-sentence';p.innerHTML=(g.before||'')+` <span class="gap" id="${g.id}" onclick="fillGap('${g.id}')"></span> `+(g.after||'');ct.appendChild(p);});
+}
+function selectWord(w){document.querySelectorAll('.vocab-chip').forEach(c=>c.classList.remove('selected'));if(selectedWord===w){selectedWord=null;return;}selectedWord=w;document.getElementById('chip_'+w).classList.add('selected');}
+function fillGap(gid){const gap=document.getElementById(gid);const cur=gap.textContent.trim();if(cur){const c=document.getElementById('chip_'+cur);if(c)c.classList.remove('used');gap.textContent='';gap.classList.remove('correct','wrong');return;}if(!selectedWord)return;const chip=document.getElementById('chip_'+selectedWord);if(chip.classList.contains('used'))return;gap.textContent=selectedWord;chip.classList.add('used');selectedWord=null;document.querySelectorAll('.vocab-chip').forEach(c=>c.classList.remove('selected'));}
+function checkGaps(){let correct=0;GAPS.forEach(g=>{const gap=document.getElementById(g.id);const val=gap.textContent.trim();if(val===g.blank){gap.classList.add('correct');gap.classList.remove('wrong');correct++;}else if(val){gap.classList.add('wrong');gap.classList.remove('correct');}});const fb=document.getElementById('gapFeedback');fb.className='feedback-msg show '+(correct===GAPS.length?'ok':'err');fb.textContent=correct===GAPS.length?`All ${GAPS.length} correct!`:`${correct} of ${GAPS.length} correct. Try again.`;}
+function buildVocabQuiz(){document.getElementById('vocabQuiz').innerHTML=VOCAB_QS.map((q,idx)=>`<div class="card"><p class="drill-q">${idx+1}. ${q.q}</p><div class="drill-options">${q.opts.map((o,i)=>`<button class="opt-btn" onclick="this.parentElement.querySelectorAll('.opt-btn').forEach((b,j)=>{b.disabled=true;b.classList.toggle('correct',j===${q.ans});b.classList.toggle('wrong',j===${i} && j!==${q.ans});})">${o}</button>`).join('')}</div></div>`).join('');}
+function buildFunctional(){const wrap=document.getElementById('funcContent');wrap.innerHTML='';FUNC_CATS.forEach(cat=>{let html=`<div class="card"><p style="font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--primary);margin-bottom:10px">${cat.label}</p>`;cat.phrases.forEach(ph=>html+=`<div class="bullet-row"><span class="bullet-dot"></span><span>${ph}</span></div>`);html+='</div>';wrap.innerHTML+=html;});wrap.innerHTML+=`<div class="card-muted"><strong>Speaking practice:</strong> Choose 5 phrases and say them aloud with your partner.</div>`;}
+function buildGrammarOne(){document.getElementById('grammarOne').innerHTML=GRAMMAR_ONE.map((q,idx)=>`<div class="card"><p class="drill-q">${idx+1}. ${q.q}</p><div class="drill-options">${q.opts.map((o,i)=>`<button class="opt-btn" onclick="answerStatic(this,${i},${q.ans},'${q.explain.replace(/'/g,"\\'")}')">${o}</button>`).join('')}</div><div class="explain-box"></div></div>`).join('');}
+function answerStatic(btn,i,ans,explain){const card=btn.closest('.card');card.querySelectorAll('.opt-btn').forEach((b,j)=>{b.disabled=true;if(j===ans)b.classList.add('correct');if(j===i&&j!==ans)b.classList.add('wrong');});const exp=card.querySelector('.explain-box');exp.style.display='block';exp.className='explain-box '+(i===ans?'ok':'err');exp.textContent=(i===ans?'Correct! ':'Not quite. ')+explain;}
+function buildDrill(){drillIndex=0;drillScore=0;document.getElementById('drillNextBtn').style.display='none';renderDrillQ();}
+function renderDrillQ(){const wrap=document.getElementById('drillWrap');if(drillIndex>=DRILL_QS.length){drillDone=true;document.getElementById('drillNextBtn').style.display='inline-block';wrap.innerHTML=`<div class="card" style="text-align:center"><p>Quiz complete!</p><h2>${drillScore}/${DRILL_QS.length}</h2><p>${drillScore>=3?'Great job!':'Review the grammar and try again.'}</p></div>`;return;}const q=DRILL_QS[drillIndex];wrap.innerHTML=`<p class="progress-counter">Question ${drillIndex+1} of ${DRILL_QS.length}</p><div class="card"><p class="drill-q">${q.q}</p><div class="drill-options">${q.opts.map((o,i)=>`<button class="opt-btn" onclick="answerDrill(${i})">${o}</button>`).join('')}</div><div id="drillExplain" class="explain-box"></div><button id="drillContinue" style="display:none;margin-top:12px" class="btn primary" onclick="nextDrillQ()">Next question →</button></div>`;}
+function answerDrill(i){const q=DRILL_QS[drillIndex];document.querySelectorAll('#drillWrap .opt-btn').forEach((b,j)=>{b.disabled=true;if(j===q.ans)b.classList.add('correct');if(j===i&&j!==q.ans)b.classList.add('wrong');});if(i===q.ans)drillScore++;const exp=document.getElementById('drillExplain');exp.style.display='block';exp.className='explain-box '+(i===q.ans?'ok':'err');exp.textContent=(i===q.ans?'Correct! ':'Not quite. ')+q.explain;document.getElementById('drillContinue').style.display='inline-block';}
+function nextDrillQ(){drillIndex++;renderDrillQ();}
+function buildRoleplay(){const wrap=document.getElementById('roleplayContent');wrap.innerHTML=`<div class="role-card-grid"><div class="role-card role-a"><div class="label">Student A — Founder</div><p>You have the LunchBox business idea. Explain it simply. Use the phrases from Stage 4.</p></div><div class="role-card role-b"><div class="label">Student B — Investor</div><p>Listen and ask simple questions: Who are your customers? How much is it? Why is it good?</p></div></div>`;ROLEPLAY.forEach(line=>{wrap.innerHTML+=line.speaker==='Investor'?`<div class="int-box"><div class="label">Investor</div><p>${line.text}</p></div>`:`<div class="roleplay-box"><div class="label">Founder</div><p>${line.text}</p></div>`});wrap.innerHTML+=`<div class="card-muted"><strong>Extra task:</strong> Swap roles. Pitch a new idea: a dog-walking service, a phone repair shop, or a small café.</div>`;}
+function buildSummary(){document.getElementById('summaryContent').innerHTML=`<div class="card"><h2>What you practised</h2><div class="bullet-row"><span class="bullet-dot"></span><span>8 useful business words</span></div><div class="bullet-row"><span class="bullet-dot"></span><span>Present simple for business facts</span></div><div class="bullet-row"><span class="bullet-dot"></span><span>Would like to for plans and requests</span></div><div class="bullet-row"><span class="bullet-dot"></span><span>A short business pitch role play</span></div></div><div class="card-muted"><h3>Homework</h3><p>Write 8 sentences about your own small business idea. Include: name, product, customers, price, cost, and why it is a good idea.</p></div>`;}
+function restartLesson(){drillDone=false;drillScore=0;drillIndex=0;selectedWord=null;goTo(0);}
+buildGaps();buildVocabQuiz();buildFunctional();buildGrammarOne();buildRoleplay();buildSummary();
+</script>
+</body>
+</html>
