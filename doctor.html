@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Going to the Doctor — A2 Lesson</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#fff;--bg2:#f6f5f2;--bg3:#f0ede8;--txt:#1a1a18;--txt2:#6b6a66;--bdr:rgba(0,0,0,0.12);--bdr2:rgba(0,0,0,0.22);--rm:8px;--rl:12px}
+  @media(prefers-color-scheme:dark){:root{--bg:#1c1c1a;--bg2:#252523;--bg3:#2e2e2b;--txt:#f0ede8;--txt2:#9a9891;--bdr:rgba(255,255,255,0.12);--bdr2:rgba(255,255,255,0.22)}}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--txt);min-height:100vh;padding:2rem 1rem}
+  .outer{max-width:720px;margin:0 auto}
+  .ph{text-align:center;margin-bottom:2rem}.ph h1{font-size:22px;font-weight:500;margin-bottom:4px}.ph p{font-size:14px;color:var(--txt2)}
+  .lw{background:var(--bg);border-radius:var(--rl);border:0.5px solid var(--bdr);padding:2rem}
+  .pb{display:flex;align-items:center;gap:8px;margin-bottom:2rem}
+  .sd{width:28px;height:28px;border-radius:50%;border:0.5px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--txt2);background:var(--bg2);cursor:pointer;transition:all .2s;flex-shrink:0}
+  .sd.active{background:#185FA5;color:#fff;border-color:#185FA5}.sd.done{background:#EAF3DE;color:#3B6D11;border-color:#639922}
+  .sl{flex:1;height:0.5px;background:var(--bdr)}
+  .sec{display:none}.sec.active{display:block}
+  .sh{font-size:11px;font-weight:500;color:#185FA5;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .st{font-size:20px;font-weight:500;color:var(--txt);margin-bottom:4px}
+  .ss{font-size:13px;color:var(--txt2);margin-bottom:1.5rem}
+  .card{background:var(--bg);border:0.5px solid var(--bdr);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:12px}
+  .card-m{background:var(--bg2);border:0.5px solid var(--bdr);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:12px}
+  .vg{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:16px}
+  .vc{background:#E6F1FB;border:0.5px solid #B5D4F4;border-radius:var(--rm);padding:7px 10px;font-size:13px;font-weight:500;color:#0C447C;text-align:center;cursor:pointer;transition:all .15s;user-select:none}
+  .vc:hover{background:#B5D4F4}.vc.used{background:var(--bg2);color:var(--txt2);border-color:var(--bdr);opacity:.5}.vc.selected{outline:2px solid #185FA5}
+  .gs{font-size:15px;color:var(--txt);line-height:2.2;margin-bottom:10px}
+  .gap{display:inline-block;min-width:100px;height:26px;border-bottom:2px solid #378ADD;margin:0 4px;text-align:center;font-weight:500;color:#185FA5;font-size:14px;cursor:pointer;vertical-align:bottom;padding:0 4px;transition:all .15s}
+  .gap.correct{border-bottom-color:#639922;color:#3B6D11;background:#EAF3DE;border-radius:4px 4px 0 0}
+  .gap.wrong{border-bottom-color:#E24B4A;color:#A32D2D;background:#FCEBEB;border-radius:4px 4px 0 0;animation:shake .3s}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .fm{font-size:13px;padding:10px 14px;border-radius:var(--rm);margin-bottom:12px;display:none}
+  .fm.show{display:block}.fm.ok{background:#EAF3DE;color:#3B6D11;border:0.5px solid #C0DD97}.fm.err{background:#FCEBEB;color:#A32D2D;border:0.5px solid #F7C1C1}
+  .dq{font-size:15px;font-weight:500;color:var(--txt);margin-bottom:14px;line-height:1.6}
+  .do{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  @media(max-width:500px){.do{grid-template-columns:1fr}}
+  .ob{background:var(--bg);border:0.5px solid var(--bdr2);border-radius:var(--rm);padding:10px 14px;font-size:14px;color:var(--txt);cursor:pointer;transition:all .15s;text-align:left;line-height:1.5}
+  .ob:hover:not(:disabled){background:var(--bg2)}.ob.correct{background:#EAF3DE;border-color:#639922;color:#3B6D11}.ob.wrong{background:#FCEBEB;border-color:#E24B4A;color:#A32D2D}.ob:disabled{cursor:default}
+  .pc{font-size:12px;color:var(--txt2);margin-bottom:8px}
+  .nr{display:flex;gap:8px;margin-top:1.5rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .nrr{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .btn{background:var(--bg);border:0.5px solid var(--bdr2);border-radius:var(--rm);padding:9px 20px;font-size:14px;color:var(--txt);cursor:pointer;transition:all .15s}
+  .btn:hover{background:var(--bg2)}.btn.p{background:#185FA5;color:#fff;border-color:#185FA5}.btn.p:hover{background:#0C447C}
+  .tb{font-size:11px;color:var(--txt2);background:var(--bg2);border:0.5px solid var(--bdr);border-radius:var(--rm);padding:5px 10px}
+  .rb{border-left:3px solid #378ADD;background:#E6F1FB;border-radius:0 var(--rm) var(--rm) 0;padding:12px 16px;margin-bottom:10px}
+  .rl2{font-size:11px;font-weight:500;color:#185FA5;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .rt{font-size:14px;color:#0C447C;line-height:1.7}
+  .ib{border-left:3px solid #639922;background:#EAF3DE;border-radius:0 var(--rm) var(--rm) 0;padding:12px 16px;margin-bottom:10px}
+  .il{font-size:11px;font-weight:500;color:#3B6D11;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .it{font-size:14px;color:#27500A;line-height:1.7}
+  .tip{background:#FAEEDA;border:0.5px solid #FAC775;border-radius:var(--rm);padding:10px 14px;font-size:13px;color:#633806;margin-bottom:14px}
+  .sc{width:84px;height:84px;border-radius:50%;border:3px solid #185FA5;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 18px}
+  .sn{font-size:24px;font-weight:500;color:#185FA5}.sl2{font-size:10px;color:var(--txt2)}
+  .tag{display:inline-block;font-size:11px;font-weight:500;padding:3px 9px;border-radius:var(--rm);margin-right:4px;margin-bottom:4px}
+  .tb2{background:#E6F1FB;color:#0C447C;border:0.5px solid #B5D4F4}.tg{background:#EAF3DE;color:#27500A;border:0.5px solid #C0DD97}.ta{background:#FAEEDA;color:#633806;border:0.5px solid #FAC775}
+  .div{height:0.5px;background:var(--bdr);margin:14px 0}
+  .br{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+  .bd{margin-top:6px;width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .eb{font-size:13px;padding:10px 14px;border-radius:var(--rm);margin-top:8px;display:none}
+  .rcg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+  @media(max-width:480px){.rcg{grid-template-columns:1fr}}
+  .rc{border-radius:var(--rl);padding:1rem 1.25rem;border:0.5px solid}
+  .rca{background:#E6F1FB;border-color:#B5D4F4}.rcb{background:#EAF3DE;border-color:#C0DD97}
+  .rct{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+  .rca .rct{color:#185FA5}.rcb .rct{color:#3B6D11}
+  .rc p{font-size:13px;line-height:1.7}.rca p{color:#0C447C}.rcb p{color:#27500A}
+  .lvl{display:inline-block;background:#185FA5;color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:8px;letter-spacing:.04em}
+  body{background:radial-gradient(circle at top left, rgba(24,95,165,0.10), transparent 28%),radial-gradient(circle at top right, rgba(99,153,34,0.08), transparent 24%),linear-gradient(180deg, var(--bg2), var(--bg3));}
+  .outer{max-width:920px}
+  .ph{position:relative;overflow:hidden;background:linear-gradient(135deg, rgba(18,48,84,.97), rgba(24,95,165,.88));color:#fff;text-align:left;margin-bottom:22px;padding:30px 28px;border-radius:24px;box-shadow:0 18px 48px rgba(28,53,88,.14)}
+  .ph::before,.ph::after{content:"";position:absolute;border-radius:50%;opacity:.26;pointer-events:none}
+  .ph::before{width:260px;height:260px;right:-70px;top:-95px;background:radial-gradient(circle, rgba(255,255,255,.45), transparent 68%)}
+  .ph::after{width:220px;height:220px;left:-40px;bottom:-120px;background:radial-gradient(circle, rgba(255,255,255,.18), transparent 70%)}
+  .ph h1,.ph p,.ph .lvl{position:relative;z-index:1}
+  .ph h1{font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-.03em;margin-bottom:8px}
+  .ph p{font-size:15px;color:rgba(255,255,255,.84)}
+  .lw{background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-radius:28px;border:1px solid var(--bdr);padding:28px;box-shadow:0 18px 48px rgba(28,53,88,.10)}
+  .pb{padding:14px 16px;background:var(--bg2);border:1px solid var(--bdr);border-radius:20px;margin-bottom:26px}
+  .sd{width:34px;height:34px;font-size:12px;font-weight:700;border-radius:50%;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+  .sl{height:2px;border-radius:999px;background:linear-gradient(90deg, var(--bdr), transparent)}
+  .sec.active{animation:fadeUp .28s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .sh{display:inline-block;padding:6px 12px;border-radius:999px;background:#E6F1FB;border:1px solid #B5D4F4;font-weight:700}
+  .st{font-size:28px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+  .ss{font-size:14px;margin-bottom:20px}
+  .card,.card-m,.rc,.rb,.ib,.tip{box-shadow:0 10px 26px rgba(28,53,88,.06)}
+  .card,.card-m{border-radius:20px;padding:18px 20px}
+  .card-m{background:linear-gradient(180deg, var(--bg2), rgba(255,255,255,.6))}
+  .tip{border-radius:16px;padding:12px 14px}
+  .btn,.ob,.vc{transition:transform .16s ease, box-shadow .16s ease, background .16s ease}
+  .btn:hover,.ob:hover:not(:disabled),.vc:hover{transform:translateY(-1px);box-shadow:0 10px 20px rgba(28,53,88,.10)}
+  .btn.p{background:linear-gradient(135deg, #185FA5, #0C447C)}
+  .hero-spotlight{display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:stretch;margin:0 0 20px}
+  .hero-image-card{overflow:hidden;border-radius:22px;background:var(--bg);border:1px solid var(--bdr);box-shadow:0 12px 28px rgba(28,53,88,.08);min-height:280px}
+  .hero-image-card img{width:100%;height:100%;min-height:280px;object-fit:cover;display:block}
+  .hero-copy-card{background:linear-gradient(180deg, var(--bg), var(--bg2));border:1px solid var(--bdr);border-radius:22px;box-shadow:0 12px 28px rgba(28,53,88,.08);padding:22px;display:flex;flex-direction:column;justify-content:center}
+  .eyebrow{display:inline-block;align-self:flex-start;margin-bottom:10px;padding:6px 12px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#185FA5;background:#E6F1FB;border:1px solid #B5D4F4;border-radius:999px}
+  .hero-copy-card h2{font-size:30px;line-height:1.1;letter-spacing:-.03em;margin-bottom:10px}
+  .hero-copy-card p{font-size:14px;line-height:1.7;color:var(--txt2)}
+  .hero-stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+  .hero-stat{padding:10px 12px;border-radius:14px;background:var(--bg);border:1px solid var(--bdr);font-size:12px;color:var(--txt2)}
+  .hero-stat strong{display:block;font-size:14px;color:var(--txt);margin-bottom:2px}
+  @media(max-width:760px){.hero-spotlight,.rcg{grid-template-columns:1fr}.hero-image-card,.hero-image-card img{min-height:220px}.lw{padding:18px}.ph{padding:24px 20px}}
+</style>
+</head>
+<body>
+<div class="outer">
+  <div class="ph">
+    <div class="lvl">A2 — Elementary</div>
+    <h1>Going to the Doctor</h1>
+    <p>A2 level &nbsp;·&nbsp; 40-minute interactive lesson</p>
+  </div>
+  <div class="lw">
+    <div class="pb" id="pb">
+      <div class="sd active" onclick="goTo(0)">1</div><div class="sl"></div>
+      <div class="sd" onclick="goTo(1)">2</div><div class="sl"></div>
+      <div class="sd" onclick="goTo(2)">3</div><div class="sl"></div>
+      <div class="sd" onclick="goTo(3)">4</div><div class="sl"></div>
+      <div class="sd" onclick="goTo(4)">5</div><div class="sl"></div>
+      <div class="sd" onclick="goTo(5)">6</div>
+    </div>
+
+    <div class="sec active" id="sec0">
+      <div class="sh">Stage 1 — Warm-up</div>
+      <div class="st">At the doctor's</div>
+      <div class="ss">5 minutes · Simple discussion</div>
+      <div class="hero-spotlight">
+        <div class="hero-image-card">
+          <img src="https://images.pexels.com/photos/7089401/pexels-photo-7089401.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Doctor talking to a patient in a clinic">
+        </div>
+        <div class="hero-copy-card">
+          <span class="eyebrow">Lesson preview</span>
+          <h2>Talk about health problems in simple English</h2>
+          <p>This lesson helps learners say what hurts, answer basic questions, and understand simple advice from a doctor. The photo gives page 1 a clearer real-life context.</p>
+          <div class="hero-stats">
+            <div class="hero-stat"><strong>A2</strong>CEFR level</div>
+            <div class="hero-stat"><strong>40 min</strong>Interactive lesson</div>
+            <div class="hero-stat"><strong>6 stages</strong>Speaking practice</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-m">
+        <p style="font-size:14px;font-weight:500;margin-bottom:10px">Talk to your partner. Use simple words:</p>
+        <p style="font-size:14px;line-height:1.9;margin-bottom:4px">1. Point to parts of your body. Say: <em>This is my head / arm / stomach.</em></p>
+        <p style="font-size:14px;line-height:1.9;margin-bottom:4px">2. Can you say three things that can hurt? (e.g. <em>My head hurts.</em>)</p>
+        <p style="font-size:14px;line-height:1.9">3. What do you say when you go to the doctor? Do you know any words?</p>
+      </div>
+      <div class="tip"><strong>Teacher note:</strong> Keep language very simple at A2. Drill: "I have a headache / stomachache / fever / cold." Teach: hurt (verb), pain (noun), feel (verb). Use pictures of body parts. Model the target sentence: "My ___ hurts." Have students repeat.</div>
+      <div class="card">
+        <p style="font-size:13px;color:var(--txt2);margin-bottom:8px">Today's situation:</p>
+        <p style="font-size:15px;font-weight:500;margin-bottom:8px">You do not feel well. You go to see the doctor at the medical centre.</p>
+        <p style="font-size:14px;color:var(--txt);line-height:1.7;margin-bottom:8px">Your problems: <strong>headache</strong> for 2 days, <strong>temperature</strong> (38&#x00B0;C), <strong>sore throat</strong>. You are not sleeping well. You do not have any allergies.</p>
+        <div><span class="tag tb2">Simple sentences</span><span class="tag tg">Body vocabulary</span><span class="tag ta">Short answers</span></div>
+      </div>
+      <div class="nr"><span class="tb">5 min</span><button class="btn p" onclick="goTo(1)">Next: vocabulary &#x2192;</button></div>
+    </div>
+
+    <div class="sec" id="sec1">
+      <div class="sh">Stage 2 — Vocabulary</div>
+      <div class="st">Words for the doctor</div>
+      <div class="ss">10 minutes · Gap-fill exercise</div>
+      <div class="tip">Click a word. Then click a blank. Click a filled blank to remove it.</div>
+      <div class="vg" id="wordBank"></div>
+      <div id="gapFeedback" class="fm"></div>
+      <div class="card">
+        <p style="font-size:13px;color:var(--txt2);margin-bottom:14px">Put the correct word in each gap.</p>
+        <div id="gapSentences"></div>
+      </div>
+      <div class="nr">
+        <button class="btn" onclick="goTo(0)">&#x2190; back</button>
+        <div class="nrr"><span class="tb">10 min</span><button class="btn" onclick="checkGaps()">Check</button><button class="btn p" onclick="goTo(2)">Next &#x2192;</button></div>
+      </div>
+    </div>
+
+    <div class="sec" id="sec2">
+      <div class="sh">Stage 3 — Useful phrases</div>
+      <div class="st">What to say at the doctor</div>
+      <div class="ss">8 minutes · Study and practise</div>
+      <div id="funcContent"></div>
+      <div class="nr">
+        <button class="btn" onclick="goTo(1)">&#x2190; back</button>
+        <div class="nrr"><span class="tb">8 min</span><button class="btn p" onclick="goTo(3)">Next &#x2192;</button></div>
+      </div>
+    </div>
+
+    <div class="sec" id="sec3">
+      <div class="sh">Stage 4 — Grammar practice</div>
+      <div class="st">Simple questions drill</div>
+      <div class="ss">10 minutes · Choose the correct answer</div>
+      <div id="drillWrap"></div>
+      <div class="nr">
+        <button class="btn" onclick="goTo(2)">&#x2190; back</button>
+        <div class="nrr"><span class="tb">10 min</span><button class="btn p" id="drillNextBtn" onclick="goTo(4)" style="display:none">Next: role play &#x2192;</button></div>
+      </div>
+    </div>
+
+    <div class="sec" id="sec4">
+      <div class="sh">Stage 5 — Role play</div>
+      <div class="st">At the doctor's surgery</div>
+      <div class="ss">12 minutes · Pair work</div>
+      <div class="tip"><strong>How to use:</strong> Student A = Patient. Student B = Doctor. Speak slowly and use simple sentences. It is OK to make mistakes — keep going!</div>
+      <div id="roleplayContent"></div>
+      <div class="nr">
+        <button class="btn" onclick="goTo(3)">&#x2190; back</button>
+        <div class="nrr"><span class="tb">12 min</span><button class="btn p" onclick="goTo(5)">Finish &#x2192;</button></div>
+      </div>
+    </div>
+
+    <div class="sec" id="sec5">
+      <div class="sh">Stage 6 — Summary</div>
+      <div class="st">Lesson complete!</div>
+      <div class="ss">5 minutes · Review</div>
+      <div id="summaryContent"></div>
+      <div class="nr">
+        <button class="btn" onclick="goTo(4)">&#x2190; back</button>
+        <button class="btn p" onclick="restartLesson()">Start again &#x21BA;</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+let cs=0,sw=null,ga={},ds=0,di=0,dd=false;
+const WORDS=[
+  {word:'headache',def:'a pain in your head'},
+  {word:'fever',def:'a high body temperature when you are ill'},
+  {word:'throat',def:'the inside part of your neck'},
+  {word:'medicine',def:'a tablet or liquid that helps you feel better'},
+  {word:'doctor',def:'a person who helps sick people'},
+  {word:'appointment',def:'a time to see the doctor'},
+  {word:'temperature',def:'how hot or cold your body is'},
+  {word:'tired',def:'you want to sleep; you have no energy'},
+];
+const GAPS=[
+  {id:'g0',before:'I have a ',blank:'headache',after:'. It started two days ago.'},
+  {id:'g1',before:'My ',blank:'temperature',after:' is 38 degrees.'},
+  {id:'g2',before:'My ',blank:'throat',after:' is sore. It hurts when I swallow.'},
+  {id:'g3',before:'The doctor gave me some ',blank:'medicine',after:' to take three times a day.'},
+  {id:'g4',before:'The ',blank:'doctor',after:' asked me many questions about my symptoms.'},
+  {id:'g5',before:'I made an ',blank:'appointment',after:' for Monday morning at 9 o\'clock.'},
+  {id:'g6',before:'I have a ',blank:'fever',after:' — my body feels very hot.'},
+  {id:'g7',before:'I feel very ',blank:'tired',after:'. I cannot sleep at night.'},
+];
+const FUNC_CATS=[
+  {label:'Saying what is wrong',phrases:['My head hurts.','I have a sore throat.','I have a temperature.','I feel very tired.','I don\'t feel well.']},
+  {label:'Answering the doctor',phrases:['It started two days ago.','No, I don\'t have any allergies.','No, I\'m not taking any medicine.','Yes, I have a temperature — 38 degrees.']},
+  {label:'Asking simple questions',phrases:['What is wrong with me?','Is it serious?','How many tablets do I take?','When do I take the medicine?']},
+  {label:'Understanding the doctor',phrases:['Sorry, can you say that again, please?','Can you speak more slowly, please?','Do I need to come back?','Do I need to rest?']},
+];
+const DRILL_QS=[
+  {q:'Your head hurts. What do you say to the doctor?',opts:['My head is hurt.','I have a headache.','My head have pain.','I am headache.'],ans:1,explain:'"I have a headache" is the correct phrase. Use "have" with ache/pain words.'},
+  {q:'The doctor asks: "When did it start?" What is the best answer?',opts:['It start yesterday.','It started two days ago.','It is starting two days.','Yesterday it starts.'],ans:1,explain:'Use past simple: "It started two days ago." Always add "ago" after a time expression in the past.'},
+  {q:'You want to ask if the medicine is for three days. Which is correct?',opts:['Medicine is for three day?','Is the medicine for three days?','The medicine for three days is?','How long medicine?'],ans:1,explain:'Yes/no questions: Is/Are/Do/Does at the beginning. "Is the medicine for three days?" is correct.'},
+  {q:'The doctor speaks very fast. What do you say?',opts:['Speak slow.','Can you speak more slowly, please?','I don\'t understand you.','Too fast for me!'],ans:1,explain:'"Can you speak more slowly, please?" is polite and correct. Use "slowly" (adverb), not "slow".'},
+  {q:'How do you say you do not have any allergies?',opts:['I have not allergy.','I don\'t have any allergies.','No allergies I have.','Allergies — no.'],ans:1,explain:'"I don\'t have any allergies." — use "any" with negatives and questions.'},
+  {q:'The doctor gives you medicine. How do you ask how many tablets to take?',opts:['How many tablets I take?','How many tablets do I take?','How many I take tablet?','How tablet I take?'],ans:1,explain:'"How many + noun + do I + verb?" is the correct question structure.'},
+];
+const ROLEPLAY=[
+  {speaker:'Doctor',text:'Hello! Come in and sit down. How can I help you today?'},
+  {speaker:'Patient',text:'[Say hello. Say you do not feel well. Say your head hurts and your throat is sore.]'},
+  {speaker:'Doctor',text:'I see. When did it start?'},
+  {speaker:'Patient',text:'[Say it started two days ago. Say you also have a temperature.]'},
+  {speaker:'Doctor',text:'Do you have a temperature? What is it?'},
+  {speaker:'Patient',text:'[Say yes. Say your temperature is 38 degrees. Say you feel very tired.]'},
+  {speaker:'Doctor',text:'Are you taking any medicine at the moment? Do you have any allergies?'},
+  {speaker:'Patient',text:'[Say no to both questions.]'},
+  {speaker:'Doctor',text:'OK. Open your mouth please... Yes, your throat is red. I think you have an infection. I will give you some medicine.'},
+  {speaker:'Patient',text:'[Ask: is it serious? Ask: how many tablets do I take?]'},
+  {speaker:'Doctor',text:'It is not serious. Take one tablet three times a day — morning, afternoon, and evening. Drink lots of water and rest.'},
+  {speaker:'Patient',text:'[Repeat back: one tablet, three times a day. Ask if you need to come back.]'},
+  {speaker:'Doctor',text:'Come back if you do not feel better in three days. Take care!'},
+  {speaker:'Patient',text:'[Say thank you. Say goodbye.]'},
+];
+function goTo(n){
+  document.querySelectorAll('.sec').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.sd').forEach((d,i)=>{d.classList.remove('active','done');if(i===n)d.classList.add('active');else if(i<n)d.classList.add('done');});
+  cs=n;if(n===1)bG();if(n===2)bF();if(n===3&&!dd)bD();if(n===4)bR();if(n===5)bS();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function bG(){
+  const bank=document.getElementById('wordBank');bank.innerHTML='';
+  WORDS.forEach(w=>{const c=document.createElement('div');c.className='vc';c.textContent=w.word;c.id='chip_'+w.word;c.title=w.def;c.onclick=()=>selW(w.word);bank.appendChild(c);});
+  const ct=document.getElementById('gapSentences');ct.innerHTML='';
+  GAPS.forEach(g=>{const p=document.createElement('p');p.className='gs';p.innerHTML=(g.before||'')+`<span class="gap" id="${g.id}" onclick="fG('${g.id}')"></span>`+(g.after||'');ct.appendChild(p);});
+}
+function selW(w){
+  document.querySelectorAll('.vc').forEach(c=>c.classList.remove('selected'));
+  if(sw===w){sw=null;return;}sw=w;const c=document.getElementById('chip_'+w);if(c)c.classList.add('selected');
+}
+function fG(gid){
+  const gap=document.getElementById(gid);if(!gap)return;
+  const cur=gap.textContent.trim();
+  if(cur){const c=document.getElementById('chip_'+cur);if(c)c.classList.remove('used');gap.textContent='';gap.classList.remove('correct','wrong');delete ga[gid];return;}
+  if(!sw)return;const chip=document.getElementById('chip_'+sw);if(chip&&chip.classList.contains('used'))return;
+  gap.textContent=sw;ga[gid]=sw;if(chip)chip.classList.add('used');sw=null;document.querySelectorAll('.vc').forEach(c=>c.classList.remove('selected'));
+}
+function checkGaps(){
+  let ok=0;GAPS.forEach(g=>{const gap=document.getElementById(g.id);const val=gap?gap.textContent.trim():'';if(val===g.blank){gap.classList.add('correct');gap.classList.remove('wrong');ok++;}else if(val){gap.classList.add('wrong');gap.classList.remove('correct');}});
+  const fb=document.getElementById('gapFeedback');fb.className='fm show '+(ok===GAPS.length?'ok':'err');
+  fb.textContent=ok===GAPS.length?`All ${GAPS.length} correct! Well done!`:`${ok} of ${GAPS.length} correct. Try again!`;
+}
+function bF(){
+  const w=document.getElementById('funcContent');w.innerHTML='';
+  FUNC_CATS.forEach(cat=>{let h=`<div class="card"><p style="font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--txt2);margin-bottom:10px">${cat.label}</p>`;cat.phrases.forEach(ph=>{h+=`<div class="br"><span class="bd" style="background:#378ADD"></span><span style="font-size:14px;color:var(--txt);line-height:1.6">${ph}</span></div>`;});h+='</div>';w.innerHTML+=h;});
+  w.innerHTML+=`<div class="tip">Practise these phrases with your partner. Say them out loud. They are short and simple — you can use them in real life!</div>`;
+}
+function bD(){di=0;ds=0;rDQ();}
+function rDQ(){
+  const w=document.getElementById('drillWrap');
+  if(di>=DRILL_QS.length){dd=true;document.getElementById('drillNextBtn').style.display='inline-block';w.innerHTML=`<div class="card" style="text-align:center;padding:2rem 1.25rem"><p style="font-size:13px;color:var(--txt2);margin-bottom:14px">Finished!</p><div class="sc"><span class="sn">${ds}/${DRILL_QS.length}</span><span class="sl2">score</span></div><p style="font-size:15px;font-weight:500;color:var(--txt)">${ds===DRILL_QS.length?'Perfect!':ds>=4?'Great!':'Good try!'}</p></div>`;return;}
+  const q=DRILL_QS[di];
+  w.innerHTML=`<p class="pc">Question ${di+1} of ${DRILL_QS.length}</p><div class="card"><p class="dq">${q.q}</p><div class="do">${q.opts.map((o,i)=>`<button class="ob" onclick="aD(${i})">${o}</button>`).join('')}</div><div id="de" class="eb"></div><button id="dc" style="display:none;margin-top:14px" class="btn p" onclick="nDQ()">Next &#x2192;</button></div>`;
+}
+function aD(ch){
+  const q=DRILL_QS[di];document.querySelectorAll('.ob').forEach(b=>b.disabled=true);document.querySelectorAll('.ob')[q.ans].classList.add('correct');
+  const e=document.getElementById('de');e.style.display='block';
+  if(ch===q.ans){ds++;e.style.background='#EAF3DE';e.style.color='#27500A';e.style.border='0.5px solid #C0DD97';e.textContent='Correct! '+q.explain;}
+  else{document.querySelectorAll('.ob')[ch].classList.add('wrong');e.style.background='#FCEBEB';e.style.color='#A32D2D';e.style.border='0.5px solid #F7C1C1';e.textContent='Not quite. '+q.explain;}
+  document.getElementById('dc').style.display='inline-block';
+}
+function nDQ(){di++;rDQ();}
+function bR(){
+  const w=document.getElementById('roleplayContent');w.innerHTML='';
+  w.innerHTML+=`<div class="rcg"><div class="rc rca"><div class="rct">Student A — Patient</div><p>You feel ill. Head hurts. Sore throat. Temperature: 38 degrees. Started 2 days ago. No allergies. No medicine. Tired at night.</p></div><div class="rc rcb"><div class="rct">Student B — Doctor</div><p>Ask what is wrong. Ask when it started. Ask about allergies and medicine. Look at the throat. Say it is an infection. Give medicine: 1 tablet, 3 times a day. Say: rest and drink water.</p></div></div>`;
+  ROLEPLAY.forEach(line=>{if(line.speaker==='Doctor'){w.innerHTML+=`<div class="ib"><div class="il">Doctor — Student B</div><div class="it">${line.text}</div></div>`;}else{w.innerHTML+=`<div class="rb"><div class="rl2">Patient — Student A</div><div class="rt">${line.text}</div></div>`;}});
+  w.innerHTML+=`<div style="margin-top:14px"><div class="card-m"><p style="font-size:14px;font-weight:500;margin-bottom:6px">Swap roles!</p><p style="font-size:13px;color:var(--txt2)">Now Student B is the patient with a stomachache and Student A is the doctor. Keep sentences short and simple.</p></div></div>`;
+}
+function bS(){
+  const items=['8 simple medical words','Phrases to say what is wrong, answer questions, and ask simple questions','6 grammar exercises with simple present and past tense','A doctor role play with a real patient situation'];
+  const hw=['Write 5 sentences about how you feel today. Use: I have a..., My ... hurts, I feel...','Draw a body and write the names of 10 body parts in English.','With a partner, practise: one person is sick, one is the doctor. Use only the phrases from Stage 3.'];
+  document.getElementById('summaryContent').innerHTML=`<div class="card" style="text-align:center;padding:1.75rem 1.25rem"><p style="font-size:13px;color:var(--txt2);margin-bottom:10px">Today\'s lesson</p><div class="lvl">A2 — Elementary</div><p style="font-size:22px;font-weight:500;margin:8px 0 4px">Going to the Doctor</p><p style="font-size:13px;color:var(--txt2)">~40 minutes</p></div><div class="card"><p style="font-size:13px;font-weight:500;margin-bottom:10px">What you practised:</p>${items.map(i=>`<div class="br"><span class="bd" style="background:#639922"></span><span style="font-size:14px;color:var(--txt)">${i}</span></div>`).join('')}</div><div class="card-m"><p style="font-size:13px;font-weight:500;margin-bottom:8px">Homework:</p>${hw.map((h,i)=>`<div class="br"><span class="bd" style="background:#378ADD;margin-top:7px"></span><span style="font-size:13px;color:var(--txt2);line-height:1.7">${i+1}. ${h}</span></div>`).join('')}</div><div class="tip" style="margin-bottom:0">Great work! You can now talk about feeling ill in English. Remember: short, simple sentences are perfect!</div>`;
+}
+function restartLesson(){dd=false;ds=0;di=0;ga={};sw=null;goTo(0);}
+bG();bF();bR();bS();
+</script>
+</body>
+</html>
