@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meetings — A2 Lesson</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#fff;--bg2:#f6f5f2;--bg3:#f0ede8;--txt:#1a1a18;--txt2:#6b6a66;--bdr:rgba(0,0,0,0.12);--bdr2:rgba(0,0,0,0.22);--rm:8px;--rl:12px}
+  @media(prefers-color-scheme:dark){:root{--bg:#1c1c1a;--bg2:#252523;--bg3:#2e2e2b;--txt:#f0ede8;--txt2:#9a9891;--bdr:rgba(255,255,255,0.12);--bdr2:rgba(255,255,255,0.22)}}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg3);color:var(--txt);min-height:100vh;padding:2rem 1rem}
+  .outer{max-width:720px;margin:0 auto}
+  .ph{text-align:center;margin-bottom:2rem}.ph h1{font-size:22px;font-weight:500;margin-bottom:4px}.ph p{font-size:14px;color:var(--txt2)}
+  .lw{background:var(--bg);border-radius:var(--rl);border:0.5px solid var(--bdr);padding:2rem}
+  .pb{display:flex;align-items:center;gap:8px;margin-bottom:2rem}
+  .sd{width:28px;height:28px;border-radius:50%;border:0.5px solid var(--bdr2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:var(--txt2);background:var(--bg2);cursor:pointer;transition:all .2s;flex-shrink:0}
+  .sd.active{background:#185FA5;color:#fff;border-color:#185FA5}.sd.done{background:#EAF3DE;color:#3B6D11;border-color:#639922}
+  .sl{flex:1;height:0.5px;background:var(--bdr)}
+  .sec{display:none}.sec.active{display:block}
+  .sh{font-size:11px;font-weight:500;color:#185FA5;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+  .st{font-size:20px;font-weight:500;color:var(--txt);margin-bottom:4px}.ss{font-size:13px;color:var(--txt2);margin-bottom:1.5rem}
+  .card{background:var(--bg);border:0.5px solid var(--bdr);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:12px}
+  .card-m{background:var(--bg2);border:0.5px solid var(--bdr);border-radius:var(--rl);padding:1rem 1.25rem;margin-bottom:12px}
+  .vg{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:16px}
+  .vc{background:#E6F1FB;border:0.5px solid #B5D4F4;border-radius:var(--rm);padding:7px 10px;font-size:13px;font-weight:500;color:#0C447C;text-align:center;cursor:pointer;transition:all .15s;user-select:none}
+  .vc:hover{background:#B5D4F4}.vc.used{background:var(--bg2);color:var(--txt2);border-color:var(--bdr);opacity:.5}.vc.selected{outline:2px solid #185FA5}
+  .gs{font-size:15px;color:var(--txt);line-height:2.2;margin-bottom:10px}
+  .gap{display:inline-block;min-width:95px;height:26px;border-bottom:2px solid #378ADD;margin:0 4px;text-align:center;font-weight:500;color:#185FA5;font-size:14px;cursor:pointer;vertical-align:bottom;padding:0 4px;transition:all .15s}
+  .gap.correct{border-bottom-color:#639922;color:#3B6D11;background:#EAF3DE;border-radius:4px 4px 0 0}
+  .gap.wrong{border-bottom-color:#E24B4A;color:#A32D2D;background:#FCEBEB;border-radius:4px 4px 0 0;animation:shake .3s}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .fm{font-size:13px;padding:10px 14px;border-radius:var(--rm);margin-bottom:12px;display:none}
+  .fm.show{display:block}.fm.ok{background:#EAF3DE;color:#3B6D11;border:0.5px solid #C0DD97}.fm.err{background:#FCEBEB;color:#A32D2D;border:0.5px solid #F7C1C1}
+  .dq{font-size:15px;font-weight:500;color:var(--txt);margin-bottom:14px;line-height:1.6}
+  .do{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  @media(max-width:500px){.do{grid-template-columns:1fr}}
+  .ob{background:var(--bg);border:0.5px solid var(--bdr2);border-radius:var(--rm);padding:10px 14px;font-size:14px;color:var(--txt);cursor:pointer;transition:all .15s;text-align:left;line-height:1.5}
+  .ob:hover:not(:disabled){background:var(--bg2)}.ob.correct{background:#EAF3DE;border-color:#639922;color:#3B6D11}.ob.wrong{background:#FCEBEB;border-color:#E24B4A;color:#A32D2D}.ob:disabled{cursor:default}
+  .pc{font-size:12px;color:var(--txt2);margin-bottom:8px}
+  .nr{display:flex;gap:8px;margin-top:1.5rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .nrr{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .btn{background:var(--bg);border:0.5px solid var(--bdr2);border-radius:var(--rm);padding:9px 20px;font-size:14px;color:var(--txt);cursor:pointer;transition:all .15s}
+  .btn:hover{background:var(--bg2)}.btn.p{background:#185FA5;color:#fff;border-color:#185FA5}.btn.p:hover{background:#0C447C}
+  .tb{font-size:11px;color:var(--txt2);background:var(--bg2);border:0.5px solid var(--bdr);border-radius:var(--rm);padding:5px 10px}
+  .rb{border-left:3px solid #378ADD;background:#E6F1FB;border-radius:0 var(--rm) var(--rm) 0;padding:12px 16px;margin-bottom:10px}
+  .rl2{font-size:11px;font-weight:500;color:#185FA5;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .rt{font-size:14px;color:#0C447C;line-height:1.7}
+  .ib{border-left:3px solid #639922;background:#EAF3DE;border-radius:0 var(--rm) var(--rm) 0;padding:12px 16px;margin-bottom:10px}
+  .il{font-size:11px;font-weight:500;color:#3B6D11;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+  .it{font-size:14px;color:#27500A;line-height:1.7}
+  .tip{background:#FAEEDA;border:0.5px solid #FAC775;border-radius:var(--rm);padding:10px 14px;font-size:13px;color:#633806;margin-bottom:14px}
+  .sc{width:84px;height:84px;border-radius:50%;border:3px solid #185FA5;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:0 auto 18px}
+  .sn{font-size:24px;font-weight:500;color:#185FA5}.sl2{font-size:10px;color:var(--txt2)}
+  .tag{display:inline-block;font-size:11px;font-weight:500;padding:3px 9px;border-radius:var(--rm);margin-right:4px;margin-bottom:4px}
+  .tb2{background:#E6F1FB;color:#0C447C;border:0.5px solid #B5D4F4}.tg{background:#EAF3DE;color:#27500A;border:0.5px solid #C0DD97}.ta{background:#FAEEDA;color:#633806;border:0.5px solid #FAC775}
+  .br{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+  .bd{margin-top:6px;width:6px;height:6px;border-radius:50%;flex-shrink:0}
+  .eb{font-size:13px;padding:10px 14px;border-radius:var(--rm);margin-top:8px;display:none}
+  .rcg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+  @media(max-width:480px){.rcg{grid-template-columns:1fr}}
+  .rc{border-radius:var(--rl);padding:1rem 1.25rem;border:0.5px solid}
+  .rca{background:#E6F1FB;border-color:#B5D4F4}.rcb{background:#EAF3DE;border-color:#C0DD97}
+  .rct{font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+  .rca .rct{color:#185FA5}.rcb .rct{color:#3B6D11}
+  .rc p{font-size:13px;line-height:1.7}.rca p{color:#0C447C}.rcb p{color:#27500A}
+  .lvl{display:inline-block;background:#185FA5;color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:8px;letter-spacing:.04em}
+</style>
+</head>
+<body>
+<div class="outer">
+  <div class="ph">
+    <div class="lvl">A2 — Elementary</div>
+    <h1>Meetings at Work</h1>
+    <p>A2 level &nbsp;·&nbsp; 40-minute interactive lesson</p>
+  </div>
+  <div class="lw">
+    <div class="pb" id="pb">
+      <div class="sd active" onclick="goTo(0)">1</div><div class="sl"></div>
+      <div class="sd" onclick="goTo(1)">2</div><div class="sl"></div>
+      <div class="sd" onclick="goTo(2)">3</div><div class="sl"></div>
+      <div class="sd" onclick="goTo(3)">4</div><div class="sl"></div>
+      <div class="sd" onclick="goTo(4)">5</div><div class="sl"></div>
+      <div class="sd" onclick="goTo(5)">6</div>
+    </div>
+
+    <div class="sec active" id="sec0">
+      <div class="sh">Stage 1 — Warm-up</div>
+      <div class="st">Work meetings</div>
+      <div class="ss">5 minutes · Simple discussion</div>
+      <div class="card-m">
+        <p style="font-size:14px;font-weight:500;margin-bottom:10px">Talk to your partner. Use simple words:</p>
+        <p style="font-size:14px;line-height:1.9;margin-bottom:4px">1. Do you have meetings at work or school? How often?</p>
+        <p style="font-size:14px;line-height:1.9;margin-bottom:4px">2. What do people do in a meeting? (e.g. talk, listen, write...)</p>
+        <p style="font-size:14px;line-height:1.9">3. What time do meetings usually start in your country? Are they long or short?</p>
+      </div>
+      <div class="tip"><strong>Teacher note:</strong> At A2 focus on core meeting vocabulary and very simple functions: starting a meeting, saying you understand, asking someone to repeat, agreeing. Drill: "Can we start?" / "What time is the meeting?" / "I agree." Keep sentences to one clause wherever possible.</div>
+      <div class="card">
+        <p style="font-size:13px;color:var(--txt2);margin-bottom:8px">Today's situation:</p>
+        <p style="font-size:15px;font-weight:500;margin-bottom:8px">You are in a short team meeting at work. There are three topics: the office party, a new computer system, and next week's schedule.</p>
+        <p style="font-size:14px;color:var(--txt);line-height:1.7;margin-bottom:8px"><strong>Student A</strong> = the meeting organiser (manager).<br><strong>Student B</strong> = a team member.</p>
+        <div><span class="tag tb2">Simple meetings</span><span class="tag tg">Work English</span><span class="tag ta">Short sentences</span></div>
+      </div>
+      <div class="nr"><span class="tb">5 min</span><button class="btn p" onclick="goTo(1)">Next: vocabulary &#x2192;</button></div>
+    </div>
+
+    <div class="sec" id="sec1">
+      <div class="sh">Stage 2 — Vocabulary</div>
+      <div class="st">Meeting words</div>
+      <div class="ss">10 minutes · Gap-fill</div>
+      <div class="tip">Click a word. Then click a blank. Click a filled blank to remove it.</div>
+      <div class="vg" id="wordBank"></div>
+      <div id="gapFeedback" class="fm"></div>
+      <div class="card">
+        <p style="font-size:13px;color:var(--txt2);margin-bottom:14px">Put the correct word in each gap.</p>
+        <div id="gapSentences"></div>
+      </div>
+      <div class="nr">
+        <button class="btn" onclick="goTo(0)">&#x2190; back</button>
+        <div class="nrr"><span class="tb">10 min</span><button class="btn" onclick="checkGaps()">Check</button><button class="btn p" onclick="goTo(2)">Next &#x2192;</button></div>
+      </div>
+    </div>
+
+    <div class="sec" id="sec2">
+      <div class="sh">Stage 3 — Useful phrases</div>
+      <div class="st">What to say in a meeting</div>
+      <div class="ss">8 minutes · Study and practise</div>
+      <div id="funcContent"></div>
+      <div class="nr">
+        <button class="btn" onclick="goTo(1)">&#x2190; back</button>
+        <div class="nrr"><span class="tb">8 min</span><button class="btn p" onclick="goTo(3)">Next &#x2192;</button></div>
+      </div>
+    </div>
+
+    <div class="sec" id="sec3">
+      <div class="sh">Stage 4 — Grammar practice</div>
+      <div class="st">Meeting English grammar drill</div>
+      <div class="ss">10 minutes · Choose the correct answer</div>
+      <div id="drillWrap"></div>
+      <div class="nr">
+        <button class="btn" onclick="goTo(2)">&#x2190; back</button>
+        <div class="nrr"><span class="tb">10 min</span><button class="btn p" id="drillNextBtn" onclick="goTo(4)" style="display:none">Next: role play &#x2192;</button></div>
+      </div>
+    </div>
+
+    <div class="sec" id="sec4">
+      <div class="sh">Stage 5 — Role play</div>
+      <div class="st">A short team meeting</div>
+      <div class="ss">12 minutes · Pair work</div>
+      <div class="tip"><strong>How to use:</strong> Student A = manager who runs the meeting. Student B = team member. Use short, simple sentences. Look at Stage 3 if you need help!</div>
+      <div id="roleplayContent"></div>
+      <div class="nr">
+        <button class="btn" onclick="goTo(3)">&#x2190; back</button>
+        <div class="nrr"><span class="tb">12 min</span><button class="btn p" onclick="goTo(5)">Finish &#x2192;</button></div>
+      </div>
+    </div>
+
+    <div class="sec" id="sec5">
+      <div class="sh">Stage 6 — Summary</div>
+      <div class="st">Lesson complete!</div>
+      <div class="ss">5 minutes · Review</div>
+      <div id="summaryContent"></div>
+      <div class="nr">
+        <button class="btn" onclick="goTo(4)">&#x2190; back</button>
+        <button class="btn p" onclick="restartLesson()">Start again &#x21BA;</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+let cs=0,sw=null,ga={},ds=0,di=0,dd=false;
+const WORDS=[
+  {word:'agenda',  def:'a list of topics to discuss in a meeting'},
+  {word:'minutes', def:'the written record of what was said in a meeting'},
+  {word:'chair',   def:'the person who controls a meeting'},
+  {word:'item',    def:'one topic on the agenda'},
+  {word:'action',  def:'something someone must do after the meeting'},
+  {word:'absent',  def:'not present at the meeting'},
+  {word:'vote',    def:'to choose something by raising hands or marking a paper'},
+  {word:'break',   def:'a short stop during a long meeting'},
+];
+const GAPS=[
+  {id:'g0',before:'Please look at the ',blank:'agenda',after:'. Today we have three topics.'},
+  {id:'g1',before:'Can you write the ',blank:'minutes',after:' today? We need a record of the meeting.'},
+  {id:'g2',before:'Sarah is the ',blank:'chair',after:' today — she will start and finish the meeting.'},
+  {id:'g3',before:'The first ',blank:'item',after:' on the agenda is the office party.'},
+  {id:'g4',before:'Your ',blank:'action',after:' is to send the report to the team by Friday.'},
+  {id:'g5',before:'Tom is ',blank:'absent',after:' today. He is ill and cannot come to the meeting.'},
+  {id:'g6',before:'Let\'s ',blank:'vote',after:'. Who wants Friday for the party? Please raise your hand.'},
+  {id:'g7',before:'Let\'s have a short ',blank:'break',after:' — five minutes, then we continue.'},
+];
+const FUNC_CATS=[
+  {label:'Starting a meeting',phrases:['Good morning everyone. Let\'s start.','Can we begin? It\'s nine o\'clock.','Today we have three topics.','Is everyone here? OK, let\'s go.']},
+  {label:'Checking understanding',phrases:['Do you understand?','Is that clear?','Sorry, can you say that again?','Can you speak more slowly, please?']},
+  {label:'Agreeing and disagreeing simply',phrases:['Yes, I agree.','That\'s a good idea.','I\'m not sure about that.','I don\'t agree, sorry.']},
+  {label:'Moving on and finishing',phrases:['OK, let\'s move to the next topic.','Any questions?','That\'s all for today. Thank you.','The meeting is finished. See you next week.']},
+];
+const DRILL_QS=[
+  {q:'You want to start the meeting. Which is correct?',
+   opts:['Let\'s to start.','Let\'s start. Good morning everyone.','We start now the meeting.','The meeting it starts now.'],
+   ans:1,explain:'"Let\'s start" uses "let\'s + infinitive" for suggestions. Always greet first: "Good morning everyone."'},
+  {q:'You don\'t understand something. What do you say?',
+   opts:['I not understand.','Sorry, can you say that again, please?','Repeat please more slow.','I don\'t understand nothing.'],
+   ans:1,explain:'"Sorry, can you say that again, please?" is polite and correct. Add "please" to be more polite.'},
+  {q:'You want to agree with an idea. Which is correct?',
+   opts:['I am agree.','Yes, that\'s a good idea!','Yes, I agreeing.','Good idea it is.'],
+   ans:1,explain:'"That\'s a good idea!" is natural and correct. Never say "I am agree" — use "I agree."'},
+  {q:'The meeting is finished. What do you say?',
+   opts:['Meeting is end.','That\'s all for today. Thank you, everyone.','We finish the meeting now please.','The meeting — it is done.'],
+   ans:1,explain:'"That\'s all for today. Thank you, everyone." is the standard, polite way to close a meeting.'},
+  {q:'You want to ask about the next topic. Which is correct?',
+   opts:['What is next topic?','Can we move to the next topic?','Next topic — what is it?','Topic next please.'],
+   ans:1,explain:'"Can we move to the next topic?" is polite and uses "can + infinitive" for polite requests.'},
+  {q:'You want to say someone is not in the meeting. Which is correct?',
+   opts:['Tom is not here. He is absent today.','Tom absent.','Tom is not coming today the meeting.','Tom he is absent of the meeting.'],
+   ans:0,explain:'"Tom is not here. He is absent today." — two simple sentences. "Absent" means not present.'},
+];
+const ROLEPLAY=[
+  {speaker:'A',text:'[Welcome everyone. Say good morning. Say the meeting starts now. Say there are three topics today.]'},
+  {speaker:'B',text:'Good morning! Sorry, I\'m a little late. What are the three topics?'},
+  {speaker:'A',text:'[Say: 1. the office party, 2. the new computer system, 3. next week\'s schedule. Ask if everyone is ready.]'},
+  {speaker:'B',text:'Yes, ready! Can I write the minutes today?'},
+  {speaker:'A',text:'[Say yes, thank you. Start topic 1: the office party. Say: when should it be? Friday or Saturday?]'},
+  {speaker:'B',text:'I prefer Friday. Saturday is difficult for me. What do you think?'},
+  {speaker:'A',text:'[Say you also prefer Friday. Ask: where should the party be? The office or a restaurant?]'},
+  {speaker:'B',text:'A restaurant is nicer! But the office is cheaper. What is the budget?'},
+  {speaker:'A',text:'[Say the budget is 200 euros. Decide together. Move to topic 2: the new computer system. Say it starts on Monday.]'},
+  {speaker:'B',text:'Sorry, can you say that again? Monday — this Monday or next Monday?'},
+  {speaker:'A',text:'[Say: next Monday, the 15th. Say there is a training session on Tuesday morning. Ask if Student B can attend.]'},
+  {speaker:'B',text:'Yes, I can attend. What time is the training?'},
+  {speaker:'A',text:'[Say 9am to 11am in Room 3. Move to topic 3: next week\'s schedule. Say there is a team lunch on Wednesday.]'},
+  {speaker:'B',text:'That\'s great! Is there anything else?'},
+  {speaker:'A',text:'[Say no, that\'s all. Give Student B one action: send the minutes to the team today. Close the meeting politely.]'},
+];
+function goTo(n){
+  document.querySelectorAll('.sec').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.sd').forEach((d,i)=>{d.classList.remove('active','done');if(i===n)d.classList.add('active');else if(i<n)d.classList.add('done');});
+  cs=n;if(n===1)bG();if(n===2)bF();if(n===3&&!dd)bD();if(n===4)bR();if(n===5)bS();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function bG(){
+  const bank=document.getElementById('wordBank');bank.innerHTML='';
+  WORDS.forEach(w=>{const c=document.createElement('div');c.className='vc';c.textContent=w.word;c.id='chip_'+w.word;c.title=w.def;c.onclick=()=>selW(w.word);bank.appendChild(c);});
+  const ct=document.getElementById('gapSentences');ct.innerHTML='';
+  GAPS.forEach(g=>{const p=document.createElement('p');p.className='gs';p.innerHTML=(g.before||'')+`<span class="gap" id="${g.id}" onclick="fG('${g.id}')"></span>`+(g.after||'');ct.appendChild(p);});
+}
+function selW(w){
+  document.querySelectorAll('.vc').forEach(c=>c.classList.remove('selected'));
+  if(sw===w){sw=null;return;}sw=w;const c=document.getElementById('chip_'+w);if(c)c.classList.add('selected');
+}
+function fG(gid){
+  const gap=document.getElementById(gid);if(!gap)return;
+  const cur=gap.textContent.trim();
+  if(cur){const c=document.getElementById('chip_'+cur);if(c)c.classList.remove('used');gap.textContent='';gap.classList.remove('correct','wrong');delete ga[gid];return;}
+  if(!sw)return;const chip=document.getElementById('chip_'+sw);if(chip&&chip.classList.contains('used'))return;
+  gap.textContent=sw;ga[gid]=sw;if(chip)chip.classList.add('used');sw=null;document.querySelectorAll('.vc').forEach(c=>c.classList.remove('selected'));
+}
+function checkGaps(){
+  let ok=0;GAPS.forEach(g=>{const gap=document.getElementById(g.id);const val=gap?gap.textContent.trim():'';if(val===g.blank){gap.classList.add('correct');gap.classList.remove('wrong');ok++;}else if(val){gap.classList.add('wrong');gap.classList.remove('correct');}});
+  const fb=document.getElementById('gapFeedback');fb.className='fm show '+(ok===GAPS.length?'ok':'err');
+  fb.textContent=ok===GAPS.length?'All '+GAPS.length+' correct! Well done!':ok+' of '+GAPS.length+' correct. Try again!';
+}
+function bF(){
+  const w=document.getElementById('funcContent');w.innerHTML='';
+  FUNC_CATS.forEach(cat=>{let h='<div class="card"><p style="font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--txt2);margin-bottom:10px">'+cat.label+'</p>';cat.phrases.forEach(ph=>{h+='<div class="br"><span class="bd" style="background:#378ADD"></span><span style="font-size:14px;color:var(--txt);line-height:1.6">'+ph+'</span></div>';});h+='</div>';w.innerHTML+=h;});
+  w.innerHTML+='<div class="tip">Practise these phrases aloud. Short, clear sentences are perfect in meetings — nobody wants long, complicated sentences!</div>';
+}
+function bD(){di=0;ds=0;rDQ();}
+function rDQ(){
+  const w=document.getElementById('drillWrap');
+  if(di>=DRILL_QS.length){dd=true;document.getElementById('drillNextBtn').style.display='inline-block';w.innerHTML='<div class="card" style="text-align:center;padding:2rem 1.25rem"><p style="font-size:13px;color:var(--txt2);margin-bottom:14px">Finished!</p><div class="sc"><span class="sn">'+ds+'/'+DRILL_QS.length+'</span><span class="sl2">score</span></div><p style="font-size:15px;font-weight:500;color:var(--txt)">'+(ds===DRILL_QS.length?'Perfect!':ds>=4?'Great!':'Good try!')+'</p></div>';return;}
+  const q=DRILL_QS[di];
+  w.innerHTML='<p class="pc">Question '+(di+1)+' of '+DRILL_QS.length+'</p><div class="card"><p class="dq">'+q.q+'</p><div class="do">'+q.opts.map((o,i)=>'<button class="ob" onclick="aD('+i+'">'+o+'</button>').join('')+'</div><div id="de" class="eb"></div><button id="dc" style="display:none;margin-top:14px" class="btn p" onclick="nDQ()">Next &#x2192;</button></div>';
+}
+function aD(ch){
+  const q=DRILL_QS[di];document.querySelectorAll('.ob').forEach(b=>b.disabled=true);document.querySelectorAll('.ob')[q.ans].classList.add('correct');
+  const e=document.getElementById('de');e.style.display='block';
+  if(ch===q.ans){ds++;e.style.background='#EAF3DE';e.style.color='#27500A';e.style.border='0.5px solid #C0DD97';e.textContent='Correct! '+q.explain;}
+  else{document.querySelectorAll('.ob')[ch].classList.add('wrong');e.style.background='#FCEBEB';e.style.color='#A32D2D';e.style.border='0.5px solid #F7C1C1';e.textContent='Not quite. '+q.explain;}
+  document.getElementById('dc').style.display='inline-block';
+}
+function nDQ(){di++;rDQ();}
+function bR(){
+  const w=document.getElementById('roleplayContent');w.innerHTML='';
+  w.innerHTML+='<div class="rcg"><div class="rc rca"><div class="rct">Student A — Manager</div><p>You run the meeting. Topics: office party (Friday or Saturday? Office or restaurant? Budget: 200 euros), new computer system (starts Mon 15th, training Tue 9-11am Room 3), team lunch Wednesday. Give one action to Student B at the end.</p></div><div class="rc rcb"><div class="rct">Student B — Team member</div><p>You will write the minutes. You prefer Friday for the party. You can attend Tuesday training. Ask questions when you don\'t understand. Use phrases from Stage 3.</p></div></div>';
+  ROLEPLAY.forEach(line=>{if(line.speaker==='B'){w.innerHTML+='<div class="ib"><div class="il">Student B</div><div class="it">'+line.text+'</div></div>';}else{w.innerHTML+='<div class="rb"><div class="rl2">Student A — Manager</div><div class="rt">'+line.text+'</div></div>';}});
+  w.innerHTML+='<div style="margin-top:14px"><div class="card-m"><p style="font-size:14px;font-weight:500;margin-bottom:6px">Swap roles!</p><p style="font-size:13px;color:var(--txt2)">Now Student B runs a meeting about: 1. A new team member starting Monday. 2. A customer visit on Thursday. 3. Overtime pay this month. Use phrases from Stage 3.</p></div></div>';
+}
+function bS(){
+  const items=['8 meeting vocabulary words: agenda, minutes, chair, action, absent, vote','Phrases to start, check understanding, agree/disagree, and close a meeting','6 simple grammar drills: "let\'s + infinitive", "can you + infinitive", simple present for meetings','A short team meeting role play with three real agenda items'];
+  const hw=['Write a simple agenda for a meeting with 3 topics. Include the time and place.','Practise starting and ending a meeting with a partner. Use only phrases from Stage 3.','Write 5 sentences about a meeting you had (or invent one). Use past simple: "We talked about...", "We decided..."'];
+  document.getElementById('summaryContent').innerHTML='<div class="card" style="text-align:center;padding:1.75rem 1.25rem"><p style="font-size:13px;color:var(--txt2);margin-bottom:10px">Today\'s lesson</p><div class="lvl">A2 — Elementary</div><p style="font-size:22px;font-weight:500;margin:8px 0 4px">Meetings at Work</p><p style="font-size:13px;color:var(--txt2)">~40 minutes</p></div><div class="card"><p style="font-size:13px;font-weight:500;margin-bottom:10px">What you practised:</p>'+items.map(i=>'<div class="br"><span class="bd" style="background:#639922"></span><span style="font-size:14px;color:var(--txt)">'+i+'</span></div>').join('')+'</div><div class="card-m"><p style="font-size:13px;font-weight:500;margin-bottom:8px">Homework:</p>'+hw.map((h,i)=>'<div class="br"><span class="bd" style="background:#378ADD;margin-top:7px"></span><span style="font-size:13px;color:var(--txt2);line-height:1.7">'+(i+1)+'. '+h+'</span></div>').join('')+'</div><div class="tip" style="margin-bottom:0">Well done! You can now run and participate in a simple meeting in English. Keep practising — meetings are everywhere!</div>';
+}
+function restartLesson(){dd=false;ds=0;di=0;ga={};sw=null;goTo(0);}
+bG();bF();bR();bS();
+</script>
+</body>
+</html>
